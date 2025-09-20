@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coastal Pulse - Binaural Beats Collection | Aetherwave Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Open Sans', sans-serif;
+            background-color: #2C003E; /* Midnight Violet */
+            color: #F4F4F4; /* White Smoke */
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px; /* Consistent padding for visual hierarchy */
+        }
+        header {
+            text-align: center;
+            padding: 40px 0;
+        }
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5em;
+            color: #e15afd; /* AetherWave Pink */
+            margin-bottom: 10px;
+        }
+        .tagline {
+            font-size: 1.2em;
+            color: #A6EFFF; /* Sky Glint */
+        }
+        .hero {
+            text-align: center;
+            padding: 60px 0;
+        }
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3em;
+            color: #00F5A0; /* Electric Neon */
+            margin-bottom: 20px;
+        }
+        .hero p {
+            font-size: 1.2em;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            color: #F4F4F4; /* White Smoke */
+        }
+        .features {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-bottom: 60px;
+        }
+        .feature {
+            flex: 1 1 300px;
+            margin: 20px;
+            text-align: center;
+        }
+        .feature h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: #e15afd; /* AetherWave Pink */
+            font-size: 1.5em;
+        }
+        .track-list {
+            background-color: #1E1E2F; /* Deep Slate */
+            padding: 40px;
+            border-radius: 10px;
+            margin-bottom: 60px;
+        }
+        .track-list h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #A6EFFF; /* Sky Glint */
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .track-list ul {
+            list-style: none;
+            padding: 0;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .track-list li {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            color: #F4F4F4;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .play-sample {
+            background-color: #00F5A0; /* Electric Neon */
+            color: #2C003E; /* Midnight Violet */
+            font-family: 'Open Sans', sans-serif;
+            font-size: 0.9em;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .play-sample:hover {
+            background-color: #e15afd; /* AetherWave Pink hover */
+        }
+        .cta {
+            text-align: center;
+            padding: 60px 0;
+            background-color: #1E1E2F; /* Deep Slate for contrast */
+        }
+        .cta h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00F5A0; /* Electric Neon */
+            margin-bottom: 20px;
+        }
+        .cta p {
+            font-size: 1.2em;
+            margin-bottom: 40px;
+        }
+        #stripe-form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .buy-button {
+            background-color: #e15afd; /* AetherWave Pink */
+            color: #2C003E; /* Midnight Violet */
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2em;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .buy-button:hover {
+            background-color: #00F5A0; /* Electric Neon hover */
+        }
+        .code-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #A6EFFF; /* Sky Glint */
+            border-radius: 5px;
+            background-color: #1E1E2F; /* Deep Slate */
+            color: #F4F4F4; /* White Smoke */
+            font-size: 1em;
+        }
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            font-size: 0.9em;
+            color: #A6EFFF; /* Sky Glint */
+        }
+        footer a {
+            color: #e15afd; /* AetherWave Pink */
+            text-decoration: none;
+        }
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent overlay */
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #1E1E2F; /* Deep Slate */
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #e15afd; /* AetherWave Pink border */
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .close {
+            color: #A6EFFF; /* Sky Glint */
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover,
+        .close:focus {
+            color: #00F5A0; /* Electric Neon */
+            text-decoration: none;
+        }
+        audio {
+            width: 100%;
+            margin-top: 20px;
+        }
+        .download-btn {
+            background-color: #00F5A0; /* Electric Neon */
+            color: #2C003E; /* Midnight Violet */
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2em;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .download-btn:hover {
+            background-color: #e15afd; /* AetherWave Pink hover */
+        }
+    </style>
+    <!-- Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">Aetherwave Studio</div>
+            <div class="tagline">AI Music. Human Soul. Infinite Sound.</div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Coastal Pulse</h1>
+            <p>Immerse yourself in the rhythmic waves of binaural beats designed to elevate your focus, relaxation, and creativity. This 12-track collection blends AI precision with human intuition, creating soundscapes that transport you to serene coastal realms. Perfect for meditation, work, or unwinding—experience the pulse of the ocean in every beat.</p>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <div class="feature">
+                <h3>Binaural Magic</h3>
+                <p>Engineered frequencies to sync your brainwaves for deeper states of mind.</p>
+            </div>
+            <div class="feature">
+                <h3>AI + Human Craft</h3>
+                <p>Powered by cutting-edge AI, refined with a human touch for authentic vibes.</p>
+            </div>
+            <div class="feature">
+                <h3>Infinite Replay</h3>
+                <p>High-quality audio files ready for your playlist—endless inspiration awaits.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="track-list">
+        <div class="container">
+            <h2>Track List</h2>
+            <ul>
+                <li>1. Ocean Dawn Theta Waves <button class="play-sample" data-src="https://www.dropbox.com/s/placeholder1/ocean-dawn-sample.mp3?raw=1">Play Sample</button></li>
+                <li>2. Tidal Flow Alpha Pulse <button class="play-sample" data-src="https://www.dropbox.com/s/placeholder2/tidal-flow-sample.mp3?raw=1">Play Sample</button></li>
+                <li>3. Shoreline Serenity <button class="play-sample" data-src="https://www.dropbox.com/s/placeholder3/shoreline-serenity-sample.mp3?raw=1">Play Sample</button></li>
+                <li>4. Wave Crest Focus <button class="play-sample" data-src="https://www.dropbox.com/s/placeholder4/wave-crest-sample.mp3?raw=1">Play Sample</button></li>
+                <li>5. Deep Sea Delta Drift <button class="play-sample" data-src="https://www.dropbox.com/s/placeholder5/deep-sea-sample.mp3?raw=1">Play Sample</button></li>
+                <li>6. Coastal Breeze Gamma Boost <button class="play-sample" data-src="https://www.dropbox.com/s/placeholder6/coastal-breeze-sample.mp3?raw=1">Play Sample</button></li>
+                <li>7. Horizon Harmony <button class="play-sample" data-src="https://www.dropbox.com/s/placeholder7/horizon-harmony-sample.mp3?raw=1">Play Sample</button></li>
+                <li>8. Reef Resonance <button class="play-sample" data-src="https://www.dropbox.com/s/placeholder8/reef-resonance-sample.mp3?raw=1">Play Sample</button></li>
+                <li>9. Sunset Sync <button class="play-sample" data-src="https://www.dropbox.com/s/placeholder9/sunset-sync-sample.mp3?raw=1">Play Sample</button></li>
+                <li>10. Moonlit Tides <button class="play-sample" data-src="https://www.dropbox.com/s/placeholder10/moonlit-tides-sample.mp3?raw=1">Play Sample</button></li>
+                <li>11. Eternal Echoes <button class="play-sample" data-src="https://www.dropbox.com/s/placeholder11/eternal-echoes-sample.mp3?raw=1">Play Sample</button></li>
+                <li>12. Pulse Awakening <button class="play-sample" data-src="https://www.dropbox.com/s/placeholder12/pulse-awakening-sample.mp3?raw=1">Play Sample</button></li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="container">
+            <h2>Get Your Copy Now</h2>
+            <p>For just $9.99, unlock the full collection and dive into infinite sound. Secure payment powered by Stripe. Or enter a promo code for free access.</p>
+            <div id="stripe-form">
+                <!-- Stripe Payment Form -->
+                <form id="payment-form">
+                    <input type="text" id="promo-code" class="code-input" placeholder="Enter promo code (optional)">
+                    <div id="card-element"></div> <!-- Stripe Card Element -->
+                    <button class="buy-button" id="submit">Purchase Now</button>
+                    <div id="card-errors" role="alert"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            &copy; 2025 Aetherwave Studio. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+            <br>Created by Andrew Froehlich, CEO Aetherwave Studio & Founder, The AI Music Report
+        </div>
+    </footer>
+
+    <!-- Sample Modal -->
+    <div id="sampleModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 style="font-family: 'Orbitron', sans-serif; color: #e15afd;">30-Second Sample</h3>
+            <audio controls id="sampleAudio">
+                <source src="" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+    </div>
+
+    <!-- Download Modal -->
+    <div id="downloadModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 style="font-family: 'Orbitron', sans-serif; color: #e15afd;">Download Ready!</h3>
+            <p>Your Coastal Pulse collection is ready. Click below to download the full ZIP file.</p>
+            <a href="https://www.dropbox.com/s/placeholder_zip/coastal-pulse-full.zip?dl=1" class="download-btn">Download Now</a>
+        </div>
+    </div>
+
+    <script>
+        // Sample Modal Functionality (unchanged)
+        var sampleModal = document.getElementById("sampleModal");
+        var closeBtn = document.getElementsByClassName("close")[0];
+        var audio = document.getElementById("sampleAudio");
+        var playButtons = document.querySelectorAll(".play-sample");
+
+        playButtons.forEach(function(button) {
+            button.addEventListener("click", function() {
+                var src = this.getAttribute("data-src");
+                audio.src = src;
+                audio.load();
+                sampleModal.style.display = "flex";
+                audio.play();
+            });
+        });
+
+        closeBtn.onclick = function() {
+            sampleModal.style.display = "none";
+            audio.pause();
+            audio.currentTime = 0;
+        }
+
+        window.onclick = function(event) {
+            if (event.target == sampleModal) {
+                sampleModal.style.display = "none";
+                audio.pause();
+                audio.currentTime = 0;
+            }
+        }
+
+        // Download Modal Functionality
+        var downloadModal = document.getElementById("downloadModal");
+        var downloadCloseBtns = document.querySelectorAll(".close"); // Select all close buttons
+        downloadCloseBtns.forEach(function(btn) {
+            btn.onclick = function() {
+                if (this.parentElement.parentElement.id === "downloadModal") {
+                    downloadModal.style.display = "none";
+                } else {
+                    sampleModal.style.display = "none";
+                    audio.pause();
+                    audio.currentTime = 0;
+                }
+            }
+        });
+
+        window.onclick = function(event) {
+            if (event.target == downloadModal) {
+                downloadModal.style.display = "none";
+            } else if (event.target == sampleModal) {
+                sampleModal.style.display = "none";
+                audio.pause();
+                audio.currentTime = 0;
+            }
+        }
+
+        // Stripe and Promo Code Handling
+        var stripe = Stripe('pk_test_your_publishable_key_here'); // Replace with actual key
+        var elements = stripe.elements();
+        var card = elements.create('card');
+        card.mount('#card-element');
+
+        var form = document.getElementById('payment-form');
+        var promoCodeInput = document.getElementById('promo-code');
+        var promoCode = 'FREECOASTAL'; // Define your promo code here (change as needed)
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            var enteredCode = promoCodeInput.value.trim();
+
+            if (enteredCode === promoCode) {
+                // Bypass payment and show download modal
+                downloadModal.style.display = "flex";
+            } else {
+                // Proceed with Stripe payment
+                stripe.createToken(card).then(function(result) {
+                    if (result.error) {
+                        document.getElementById('card-errors').textContent = result.error.message;
+                    } else {
+                        // In production, send token to server here
+                        // For demo, assume success and show download modal
+                        console.log('Token created: ' + result.token.id);
+                        downloadModal.style.display = "flex";
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
