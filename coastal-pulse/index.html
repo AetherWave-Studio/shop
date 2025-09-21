@@ -6,6 +6,22 @@
     <title>Coastal Pulse - Aetherwave Studio</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <style>
+	.modal {
+    display: none; /* Rely on this instead of aria-hidden */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+}
+.modal[style*="display: flex"] {
+    display: flex !important; /* Ensure active state */
+}
         body { margin: 0; padding: 0; font-family: 'Open Sans', sans-serif; background-color: #2C003E; color: #F4F4F4; line-height: 1.6; }
         .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
         header { text-align: center; padding: 40px 0; }
@@ -139,8 +155,7 @@
     </div>
 
 <script>
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzdtU3oKL4ajOSRTkzZzO7JTq2TU8QYO6W7rlZvGk7SZuf3uEj6E1P7YLgxkfbj-iMY/exec'; // Saved Web App URL
-    // Fetch and populate playlist data
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzdtU3oKL4ajOSRTkzZzO7JTq2TU8QYO6W7rlZvGk7SZuf3uEj6E1P7YLgxkfbj-iMY/exec';
     fetch(WEB_APP_URL)
         .then(response => {
             if (!response.ok) throw new Error('Failed to fetch playlist data');
@@ -167,7 +182,6 @@
             document.getElementById('playlist-title').textContent = 'Error: ' + error.message;
         });
 
-    // Helper functions
     function attachPlayListeners() {
         document.querySelectorAll(".play-sample").forEach(button => {
             button.addEventListener("click", () => {
@@ -175,6 +189,7 @@
                 const audio = document.getElementById("sampleAudio");
                 audio.src = src;
                 audio.load();
+                document.getElementById("sampleModal").removeAttribute('inert');
                 document.getElementById("sampleModal").style.display = "flex";
                 audio.play();
             });
@@ -188,23 +203,18 @@
                 const trackId = link.getAttribute("data-track-id");
                 const track = tracks.find(t => t.id == trackId);
                 if (track && track.download) {
+                    document.getElementById("track-download-modal").removeAttribute('inert');
                     document.getElementById("track-download-modal").style.display = "flex";
                     document.getElementById("track-download-title").textContent = track.title;
-                    if (window.card) {
-                        window.card.unmount();
-                    }
+                    if (window.card) window.card.unmount();
                     const cardElement = document.getElementById('track-card-element');
-                    if (cardElement && !cardElement._isMounted) { // Check if not mounted
-                        window.card.mount(cardElement);
-                        console.log('Card mounted for track modal');
-                    }
+                    if (cardElement) window.card.mount(cardElement);
                 }
             });
         });
     }
 
-    // Stripe and Modal Logic
-    var stripe = Stripe('pk_live_51S9eZlE8VeplveDuSikbjq2q2t4VKIdLPcNZIqSTNl7dcA0rvsdnZyl5SXyJRvH9h1TkU8bAIMRWNd6li8TdnMZI00ZLuxuWvH'); // Saved Stripe key
+    var stripe = Stripe('pk_live_51S9eZlE8VeplveDuSikbjq2q2t4VKIdLPcNZIqSTNl7dcA0rvsdnZyl5SXyJRvH9h1TkU8bAIMRWNd6li8TdnMZI00ZLuxuWvH');
     var elements = stripe.elements();
     var card = elements.create('card', {
         style: {
@@ -230,6 +240,7 @@
         event.preventDefault();
         var enteredCode = promoCodeInput.value.trim();
         if (enteredCode === promoCode) {
+            downloadModal.removeAttribute('inert');
             downloadModal.style.display = 'flex';
         } else {
             card.unmount();
@@ -244,10 +255,11 @@
                         document.getElementById('card-errors').textContent = result.error.message;
                     } else {
                         console.log('Token created: ' + result.token.id);
+                        downloadModal.removeAttribute('inert');
                         downloadModal.style.display = 'flex';
                     }
                 }).catch(err => console.error('Stripe error:', err));
-            }, 300);
+            }, 500);
         }
     });
 
@@ -267,20 +279,23 @@
                     document.getElementById('track-download-link').style.display = 'block';
                 }
             }).catch(err => console.error('Track Stripe error:', err));
-        }, 300);
+        }, 500);
     });
 
     closeButtons.forEach(closeBtn => {
         closeBtn.onclick = () => {
             if (closeBtn.parentElement.parentElement.id === 'downloadModal') {
                 downloadModal.style.display = 'none';
+                downloadModal.setAttribute('inert', '');
                 card.unmount();
             } else if (closeBtn.parentElement.parentElement.id === 'sampleModal') {
                 sampleModal.style.display = 'none';
+                sampleModal.setAttribute('inert', '');
                 document.getElementById('sampleAudio').pause();
                 document.getElementById('sampleAudio').currentTime = 0;
             } else if (closeBtn.parentElement.parentElement.id === 'track-download-modal') {
                 trackDownloadModal.style.display = 'none';
+                trackDownloadModal.setAttribute('inert', '');
                 card.unmount();
             }
         };
@@ -289,13 +304,16 @@
     window.onclick = (event) => {
         if (event.target == sampleModal) {
             sampleModal.style.display = 'none';
+            sampleModal.setAttribute('inert', '');
             document.getElementById('sampleAudio').pause();
             document.getElementById('sampleAudio').currentTime = 0;
         } else if (event.target == downloadModal) {
             downloadModal.style.display = 'none';
+            downloadModal.setAttribute('inert', '');
             card.unmount();
         } else if (event.target == trackDownloadModal) {
             trackDownloadModal.style.display = 'none';
+            trackDownloadModal.setAttribute('inert', '');
             card.unmount();
         }
     };
