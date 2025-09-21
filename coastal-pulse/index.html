@@ -213,8 +213,8 @@
                     if (cardElement) {
                         window.card.mount(cardElement);
                         console.log('Card mounted for track modal');
-                        // Force focus to ensure input is ready
-                        cardElement.focus();
+                        // Force focus and wait for input
+                        setTimeout(() => cardElement.querySelector('input').focus(), 100);
                     }
                 }
             });
@@ -257,6 +257,7 @@
                 if (document.getElementById('card-element') && !card._isMounted) {
                     card.mount('#card-element');
                     console.log('Card remounted for main form');
+                    document.getElementById('card-element').querySelector('input').focus();
                 }
                 stripe.createToken(card).then(result => {
                     if (result.error) {
@@ -278,8 +279,8 @@
             if (document.getElementById('track-card-element') && !card._isMounted) {
                 card.mount('#track-card-element');
                 console.log('Card remounted for track modal');
-                // Force focus to ensure input
-                document.getElementById('track-card-element').focus();
+                const input = document.getElementById('track-card-element').querySelector('input');
+                if (input) input.focus(); // Force focus on input
             }
             stripe.createToken(card).then(result => {
                 if (result.error) {
