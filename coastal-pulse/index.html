@@ -6,6 +6,19 @@
     <title>Coastal Pulse - Aetherwave Studio</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <style>
+	#track-stripe-form {
+    max-width: 400px;
+    margin: 20px auto;
+}
+#track-card-element {
+    border: 1px solid #A6EFFF;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+#track-submit {
+    margin-top: 10px;
+}
         body { margin: 0; padding: 0; font-family: 'Open Sans', sans-serif; background-color: #2C003E; color: #F4F4F4; line-height: 1.6; }
         .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
         header { text-align: center; padding: 40px 0; }
@@ -40,6 +53,22 @@
     </style>
     <script src="https://js.stripe.com/v3/"></script>
 </head>
+
+<div id="track-download-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3 id="track-download-title" style="font-family: 'Orbitron', sans-serif; color: #e15afd;">Download Track</h3>
+        <p>Pay $1.99 to download this track's ZIP file.</p>
+        <div id="track-stripe-form">
+            <div id="track-card-element"></div>
+            <button id="track-submit" class="buy-button">Purchase</button>
+            <div id="track-card-errors" role="alert"></div>
+        </div>
+        <a id="track-download-link" class="download-btn" style="display: none;">Download Now</a>
+    </div>
+</div>
+
+
 <body>
     <header>
         <div class="container">
@@ -122,114 +151,129 @@
     </div>
 
     <script>
-        // Web App URL for dynamic JSON (customize per playlist)
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzdtU3oKL4ajOSRTkzZzO7JTq2TU8QYO6W7rlZvGk7SZuf3uEj6E1P7YLgxkfbj-iMY/exec'; // Replace with your deployed URL for this playlist
+    const WEB_APP_URL = 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec'; // Replace with your deployed URL
 
-        // Fetch and populate playlist data
-        fetch(WEB_APP_URL)
-            .then(response => {
-                if (!response.ok) throw new Error('Failed to fetch playlist data');
-                return response.json();
-            })
-            .then(data => {
-                if (data.error) throw new Error(data.error);
+    // Fetch and populate playlist data
+    fetch(WEB_APP_URL)
+        .then(response => {
+            if (!response.ok) throw new Error('Failed to fetch playlist data');
+            return response.json();
+        })
+        .then(data => {
+            if (data.error) throw new Error(data.error);
 
-                // Populate hero
-                document.getElementById('playlist-title').textContent = data.title || 'Coastal Pulse';
-                document.getElementById('playlist-description').textContent = data.description || 'Immerse yourself in the rhythmic waves...';
-                document.getElementById('playlist-price').textContent = `For just ${data.price || '$9.99'}, unlock the full collection.`;
+            document.getElementById('playlist-title').textContent = data.title || 'Coastal Pulse';
+            document.getElementById('playlist-description').textContent = data.description || 'Immerse yourself in the rhythmic waves...';
+            document.getElementById('playlist-price').textContent = `For just ${data.price || '$9.99'}, unlock the full collection.`;
 
-                // Populate track list dynamically with cover art and download links
-                const trackList = document.getElementById('track-list');
-                trackList.innerHTML = ''; // Clear static list
-                data.tracks.forEach(track => {
-                    const li = document.createElement('li');
-                    li.innerHTML = `<img src="${track.cover_art || ''}" alt="${track.title} cover" style="width: 50px; height: 50px; margin-right: 10px; vertical-align: middle;"> ${track.title} <button class="play-sample" data-src="${track.sample || ''}">Play Sample</button> <a href="${track.download || ''}" class="download-btn" style="margin-left: 10px;" download>Download Track ZIP</a>`;
-                    trackList.appendChild(li);
-                });
-
-                // Set download link for full ZIP
-                document.getElementById('download-link').href = data.zip_download || '';
-
-                // Re-attach event listeners for new buttons
-                attachPlayListeners();
-            })
-            .catch(error => {
-                console.error('Error loading playlist:', error);
-                document.getElementById('playlist-title').textContent = 'Error Loading Playlist';
+            const trackList = document.getElementById('track-list');
+            trackList.innerHTML = '';
+            data.tracks.forEach(track => {
+                const li = document.createElement('li');
+                li.innerHTML = `<img src="${track.cover_art || ''}" alt="${track.title} cover" style="width: 50px; height: 50px; margin-right: 10px; vertical-align: middle;"> ${track.title} <button class="play-sample" data-src="${track.sample || ''}">Play Sample</button> <a href="#" class="download-btn track-download" data-track-id="${track.id}" style="margin-left: 10px;">Download Track ZIP ($1.99)</a>`;
+                trackList.appendChild(li);
             });
 
-        // Helper function for dynamic listeners
-        function attachPlayListeners() {
-            const playButtons = document.querySelectorAll(".play-sample");
-            playButtons.forEach(button => {
-                button.addEventListener("click", () => {
-                    const src = button.getAttribute("data-src");
-                    const audio = document.getElementById("sampleAudio");
-                    audio.src = src;
-                    audio.load();
-                    document.getElementById("sampleModal").style.display = "flex";
-                    audio.play();
-                });
+            document.getElementById('download-link').href = data.zip_download || '';
+            attachPlayListeners();
+            attachDownloadListeners(data.tracks);
+        })
+        .catch(error => {
+            console.error('Error loading playlist:', error);
+            document.getElementById('playlist-title').textContent = 'Error Loading Playlist';
+        });
+
+    // Helper functions
+    function attachPlayListeners() {
+        document.querySelectorAll(".play-sample").forEach(button => {
+            button.addEventListener("click", () => {
+                const src = button.getAttribute("data-src");
+                const audio = document.getElementById("sampleAudio");
+                audio.src = src;
+                audio.load();
+                document.getElementById("sampleModal").style.display = "flex";
+                audio.play();
+            });
+        });
+    }
+
+    function attachDownloadListeners(tracks) {
+        document.querySelectorAll(".track-download").forEach(link => {
+            link.addEventListener("click", (e) => {
+                e.preventDefault();
+                const trackId = link.getAttribute("data-track-id");
+                const track = tracks.find(t => t.id == trackId);
+                if (track && track.download) {
+                    document.getElementById("track-download-modal").style.display = "flex";
+                    document.getElementById("track-download-link").href = track.download;
+                    document.getElementById("track-download-title").textContent = track.title;
+                    // Here you would typically initiate a Stripe checkout session
+                    // For now, simulate with a placeholder
+                    console.log(`Initiating Stripe for ${track.title} at ${track.download}`);
+                    // Replace with actual Stripe client-side checkout
+                }
+            });
+        });
+    }
+
+    // Stripe and Modal Logic
+    var stripe = Stripe('pk_live_your_publishable_key_here'); // Replace with live key
+    var elements = stripe.elements();
+    var card = elements.create('card');
+    card.mount('#card-element');
+
+    var form = document.getElementById('payment-form');
+    var promoCodeInput = document.getElementById('promo-code');
+    var promoCode = 'FREECOASTAL';
+    var downloadModal = document.getElementById('downloadModal');
+    var sampleModal = document.getElementById('sampleModal');
+    var trackDownloadModal = document.getElementById('track-download-modal');
+    var closeButtons = document.querySelectorAll('.close');
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        var enteredCode = promoCodeInput.value.trim();
+
+        if (enteredCode === promoCode) {
+            downloadModal.style.display = 'flex';
+        } else {
+            stripe.createToken(card).then(result => {
+                if (result.error) {
+                    document.getElementById('card-errors').textContent = result.error.message;
+                } else {
+                    console.log('Token created: ' + result.token.id);
+                    downloadModal.style.display = 'flex'; // Show full ZIP
+                }
             });
         }
+    });
 
-        // Initial call for any static buttons (if present)
-        attachPlayListeners();
-
-        // Stripe and Modal Logic
-        var stripe = Stripe('pk_live_51RtQK85XNu4SywdLRNXCFIEbB7aMA0xiPIGRaa3m6pkoN7uLmgPBSOS949L7XOZGmZvXiF9AIAGLsTbsOUdjIlYX00M4sVG4PM'); // Replace with your live key
-        var elements = stripe.elements();
-        var card = elements.create('card');
-        card.mount('#card-element');
-
-        var form = document.getElementById('payment-form');
-        var promoCodeInput = document.getElementById('promo-code');
-        var promoCode = 'FREECOASTAL';
-        var downloadModal = document.getElementById('downloadModal');
-        var sampleModal = document.getElementById('sampleModal');
-        var closeButtons = document.querySelectorAll('.close');
-
-        form.addEventListener('submit', (event) => {
-            event.preventDefault();
-            var enteredCode = promoCodeInput.value.trim();
-
-            if (enteredCode === promoCode) {
-                downloadModal.style.display = 'flex';
-            } else {
-                stripe.createToken(card).then(result => {
-                    if (result.error) {
-                        document.getElementById('card-errors').textContent = result.error.message;
-                    } else {
-                        console.log('Token created: ' + result.token.id);
-                        downloadModal.style.display = 'flex'; // Show full ZIP
-                    }
-                });
-            }
-        });
-
-        closeButtons.forEach(closeBtn => {
-            closeBtn.onclick = () => {
-                if (closeBtn.parentElement.parentElement.id === 'downloadModal') {
-                    downloadModal.style.display = 'none';
-                } else if (closeBtn.parentElement.parentElement.id === 'sampleModal') {
-                    sampleModal.style.display = 'none';
-                    document.getElementById('sampleAudio').pause();
-                    document.getElementById('sampleAudio').currentTime = 0;
-                }
-            };
-        });
-
-        window.onclick = (event) => {
-            if (event.target == sampleModal) {
+    closeButtons.forEach(closeBtn => {
+        closeBtn.onclick = () => {
+            if (closeBtn.parentElement.parentElement.id === 'downloadModal') {
+                downloadModal.style.display = 'none';
+            } else if (closeBtn.parentElement.parentElement.id === 'sampleModal') {
                 sampleModal.style.display = 'none';
                 document.getElementById('sampleAudio').pause();
                 document.getElementById('sampleAudio').currentTime = 0;
-            } else if (event.target == downloadModal) {
-                downloadModal.style.display = 'none';
+            } else if (closeBtn.parentElement.parentElement.id === 'track-download-modal') {
+                trackDownloadModal.style.display = 'none';
             }
         };
-    </script>
+    });
+
+    window.onclick = (event) => {
+        if (event.target == sampleModal) {
+            sampleModal.style.display = 'none';
+            document.getElementById('sampleAudio').pause();
+            document.getElementById('sampleAudio').currentTime = 0;
+        } else if (event.target == downloadModal) {
+            downloadModal.style.display = 'none';
+        } else if (event.target == trackDownloadModal) {
+            trackDownloadModal.style.display = 'none';
+        }
+    };
+</script>
 </body>
 
 </html>
