@@ -11,10 +11,16 @@
     margin: 20px auto;
 }
 #track-card-element {
+    background-color: #1E1E2F;
     border: 1px solid #A6EFFF;
+    color: #F4F4F4;
     padding: 10px;
     border-radius: 5px;
-    margin-bottom: 10px;
+}
+.StripeElement {
+    background-color: #1E1E2F;
+    color: #F4F4F4;
+    padding: 10px;
 }
 #track-submit {
     margin-top: 10px;
@@ -217,10 +223,21 @@
     }
 
     // Stripe and Modal Logic
-    var stripe = Stripe('pk_live_51S9eZlE8VeplveDuSikbjq2q2t4VKIdLPcNZIqSTNl7dcA0rvsdnZyl5SXyJRvH9h1TkU8bAIMRWNd6li8TdnMZI00ZLuxuWvH'); // Replace with live key
-    var elements = stripe.elements();
-    var card = elements.create('card');
-    card.mount('#card-element');
+    var stripe = Stripe('pk_live_your_publishable_key_here'); // Replace with live
+var elements = stripe.elements();
+var card = elements.create('card', {
+    style: {
+        base: {
+            color: '#F4F4F4',
+            backgroundColor: '#1E1E2F',
+            fontFamily: 'Open Sans, sans-serif',
+            fontSize: '16px',
+            '::placeholder': { color: '#A6EFFF' }
+        }
+    }
+});
+card.mount('#card-element');
+card.mount('#track-card-element');
 
     var form = document.getElementById('payment-form');
     var promoCodeInput = document.getElementById('promo-code');
