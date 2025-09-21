@@ -197,14 +197,18 @@
                     if (window.card) {
                         window.card.unmount();
                     }
-                    window.card.mount('#track-card-element');
+                    // Ensure element is available before mounting
+                    const cardElement = document.getElementById('track-card-element');
+                    if (cardElement) {
+                        window.card.mount(cardElement);
+                    }
                 }
             });
         });
     }
 
     // Stripe and Modal Logic
-    var stripe = Stripe('pk_live_51S9eZlE8VeplveDuSikbjq2q2t4VKIdLPcNZIqSTNl7dcA0rvsdnZyl5SXyJRvH9h1TkU8bAIMRWNd6li8TdnMZI00ZLuxuWvH'); // Replace with live key
+    var stripe = Stripe('pk_live_your_publishable_key_here'); // Replace with live key
     var elements = stripe.elements();
     var card = elements.create('card', {
         style: {
@@ -233,9 +237,9 @@
         if (enteredCode === promoCode) {
             downloadModal.style.display = 'flex';
         } else {
-            card.unmount(); // Ensure unmounted
-            card.mount('#card-element'); // Remount for main form
-            setTimeout(() => { // Delay to ensure mount
+            card.unmount();
+            card.mount('#card-element');
+            setTimeout(() => {
                 stripe.createToken(card).then(result => {
                     if (result.error) {
                         document.getElementById('card-errors').textContent = result.error.message;
@@ -244,8 +248,23 @@
                         downloadModal.style.display = 'flex';
                     }
                 }).catch(err => console.error('Stripe error:', err));
-            }, 100); // 100ms delay
+            }, 200); // Increased delay
         }
+    });
+
+    document.getElementById('track-submit').addEventListener('click', () => {
+        card.unmount();
+        card.mount('#track-card-element');
+        setTimeout(() => {
+            stripe.createToken(card).then(result => {
+                if (result.error) {
+                    document.getElementById('track-card-errors').textContent = result.error.message;
+                } else {
+                    console.log('Track token created: ' + result.token.id);
+                    document.getElementById('track-download-link').style.display = 'block';
+                }
+            }).catch(err => console.error('Track Stripe error:', err));
+        }, 200); // Increased delay
     });
 
     closeButtons.forEach(closeBtn => {
@@ -277,24 +296,6 @@
             card.unmount();
         }
     };
-
-    // Dynamically handle track purchase (placeholder)
-    document.getElementById('track-submit').addEventListener('click', () => {
-        if (window.card) {
-            card.unmount();
-            card.mount('#track-card-element');
-            setTimeout(() => {
-                stripe.createToken(card).then(result => {
-                    if (result.error) {
-                        document.getElementById('track-card-errors').textContent = result.error.message;
-                    } else {
-                        console.log('Track token created: ' + result.token.id);
-                        document.getElementById('track-download-link').style.display = 'block';
-                    }
-                }).catch(err => console.error('Track Stripe error:', err));
-            }, 100);
-        }
-    });
 </script>
 </body>
 </html>
