@@ -155,7 +155,8 @@
     </div>
 
 <script>
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzdtU3oKL4ajOSRTkzZzO7JTq2TU8QYO6W7rlZvGk7SZuf3uEj6E1P7YLgxkfbj-iMY/exec';
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzdtU3oKL4ajOSRTkzZzO7JTq2TU8QYO6W7rlZvGk7SZuf3uEj6E1P7YLgxkfbj-iMY/exec'; // Saved Web App URL
+    // Fetch and populate playlist data
     fetch(WEB_APP_URL)
         .then(response => {
             if (!response.ok) throw new Error('Failed to fetch playlist data');
@@ -182,6 +183,7 @@
             document.getElementById('playlist-title').textContent = 'Error: ' + error.message;
         });
 
+    // Helper functions
     function attachPlayListeners() {
         document.querySelectorAll(".play-sample").forEach(button => {
             button.addEventListener("click", () => {
@@ -208,13 +210,19 @@
                     document.getElementById("track-download-title").textContent = track.title;
                     if (window.card) window.card.unmount();
                     const cardElement = document.getElementById('track-card-element');
-                    if (cardElement) window.card.mount(cardElement);
+                    if (cardElement) {
+                        window.card.mount(cardElement);
+                        console.log('Card mounted for track modal');
+                        // Force focus to ensure input is ready
+                        cardElement.focus();
+                    }
                 }
             });
         });
     }
 
-    var stripe = Stripe('pk_live_51S9eZlE8VeplveDuSikbjq2q2t4VKIdLPcNZIqSTNl7dcA0rvsdnZyl5SXyJRvH9h1TkU8bAIMRWNd6li8TdnMZI00ZLuxuWvH');
+    // Stripe and Modal Logic
+    var stripe = Stripe('pk_live_51S9eZlE8VeplveDuSikbjq2q2t4VKIdLPcNZIqSTNl7dcA0rvsdnZyl5SXyJRvH9h1TkU8bAIMRWNd6li8TdnMZI00ZLuxuWvH'); // Saved Stripe key
     var elements = stripe.elements();
     var card = elements.create('card', {
         style: {
@@ -270,6 +278,8 @@
             if (document.getElementById('track-card-element') && !card._isMounted) {
                 card.mount('#track-card-element');
                 console.log('Card remounted for track modal');
+                // Force focus to ensure input
+                document.getElementById('track-card-element').focus();
             }
             stripe.createToken(card).then(result => {
                 if (result.error) {
