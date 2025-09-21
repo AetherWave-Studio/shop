@@ -139,9 +139,7 @@
     </div>
 
 <script>
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzdtU3oKL4ajOSRTkzZzO7JTq2TU8QYO6W7rlZvGk7SZuf3uEj6E1P7YLgxkfbj-iMY/exec'; // Replace with your deployed URL
-
-   // Fetch and populate playlist data
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzdtU3oKL4ajOSRTkzZzO7JTq2TU8QYO6W7rlZvGk7SZuf3uEj6E1P7YLgxkfbj-iMY/exec';
     fetch(WEB_APP_URL)
         .then(response => {
             if (!response.ok) throw new Error('Failed to fetch playlist data');
@@ -149,11 +147,9 @@
         })
         .then(data => {
             if (data.error) throw new Error(data.error);
-
             document.getElementById('playlist-title').textContent = data.title || 'Coastal Pulse';
             document.getElementById('playlist-description').textContent = data.description || 'Immerse yourself in the rhythmic waves...';
             document.getElementById('playlist-price').textContent = `For just ${data.price || '$9.99'}, unlock the full collection.`;
-
             const trackList = document.getElementById('track-list');
             trackList.innerHTML = '';
             data.tracks.forEach(track => {
@@ -161,17 +157,15 @@
                 li.innerHTML = `<img src="${track.cover_art || ''}" alt="${track.title} cover" style="width: 50px; height: 50px; margin-right: 10px; vertical-align: middle;"> ${track.title} <button class="play-sample" data-src="${track.sample || ''}">Play Sample</button> <a href="#" class="download-btn track-download" data-track-id="${track.id}" style="margin-left: 10px;">Download Track ZIP ($1.99)</a>`;
                 trackList.appendChild(li);
             });
-
             document.getElementById('download-link').href = data.zip_download || '';
             attachPlayListeners();
             attachDownloadListeners(data.tracks);
         })
         .catch(error => {
-            console.error('Error loading playlist:', error);
-            document.getElementById('playlist-title').textContent = 'Error Loading Playlist';
+            console.error('Fetch error:', error);
+            document.getElementById('playlist-title').textContent = 'Error: ' + error.message;
         });
 
-    // Helper functions
     function attachPlayListeners() {
         document.querySelectorAll(".play-sample").forEach(button => {
             button.addEventListener("click", () => {
@@ -194,21 +188,15 @@
                 if (track && track.download) {
                     document.getElementById("track-download-modal").style.display = "flex";
                     document.getElementById("track-download-title").textContent = track.title;
-                    if (window.card) {
-                        window.card.unmount();
-                    }
-                    // Ensure element is available before mounting
+                    if (window.card) window.card.unmount();
                     const cardElement = document.getElementById('track-card-element');
-                    if (cardElement) {
-                        window.card.mount(cardElement);
-                    }
+                    if (cardElement) window.card.mount(cardElement);
                 }
             });
         });
     }
 
-    // Stripe and Modal Logic
-    var stripe = Stripe('pk_live_your_publishable_key_here'); // Replace with live key
+    var stripe = Stripe('pk_live_51S9eZlE8VeplveDuSikbjq2q2t4VKIdLPcNZIqSTNl7dcA0rvsdnZyl5SXyJRvH9h1TkU8bAIMRWNd6li8TdnMZI00ZLuxuWvH');
     var elements = stripe.elements();
     var card = elements.create('card', {
         style: {
@@ -233,7 +221,6 @@
     form.addEventListener('submit', (event) => {
         event.preventDefault();
         var enteredCode = promoCodeInput.value.trim();
-
         if (enteredCode === promoCode) {
             downloadModal.style.display = 'flex';
         } else {
@@ -248,7 +235,7 @@
                         downloadModal.style.display = 'flex';
                     }
                 }).catch(err => console.error('Stripe error:', err));
-            }, 200); // Increased delay
+            }, 300);
         }
     });
 
@@ -264,7 +251,7 @@
                     document.getElementById('track-download-link').style.display = 'block';
                 }
             }).catch(err => console.error('Track Stripe error:', err));
-        }, 200); // Increased delay
+        }, 300);
     });
 
     closeButtons.forEach(closeBtn => {
