@@ -155,7 +155,8 @@
     </div>
 
 <script>
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzdtU3oKL4ajOSRTkzZzO7JTq2TU8QYO6W7rlZvGk7SZuf3uEj6E1P7YLgxkfbj-iMY/exec';
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzdtU3oKL4ajOSRTkzZzO7JTq2TU8QYO6W7rlZvGk7SZuf3uEj6E1P7YLgxkfbj-iMY/exec'; // Saved Web App URL
+    // Fetch and populate playlist data
     fetch(WEB_APP_URL)
         .then(response => {
             if (!response.ok) throw new Error('Failed to fetch playlist data');
@@ -170,18 +171,19 @@
             trackList.innerHTML = '';
             data.tracks.forEach(track => {
                 const li = document.createElement('li');
-                li.innerHTML = `<img src="${track.cover_art || ''}" alt="${track.title} cover" style="width: 50px; height: 50px; margin-right: 10px; vertical-align: middle;"> ${track.title} <button class="play-sample" data-src="${track.sample || ''}">Play Sample</button> <button class="buy-track-btn" data-track-id="${track.id}" data-price="199" style="margin-left: 10px;">Buy Track ZIP ($1.99)</button>`;
+                li.innerHTML = `<img src="${track.cover_art || ''}" alt="${track.title} cover" style="width: 50px; height: 50px; margin-right: 10px; vertical-align: middle;"> ${track.title} <button class="play-sample" data-src="${track.sample || ''}">Play Sample</button> <a href="#" class="download-btn track-download" data-track-id="${track.id}" style="margin-left: 10px;">Download Track ZIP ($1.99)</a>`;
                 trackList.appendChild(li);
             });
             document.getElementById('download-link').href = data.zip_download || '';
             attachPlayListeners();
-            attachBuyListeners(data.tracks);
+            attachDownloadListeners(data.tracks);
         })
         .catch(error => {
             console.error('Fetch error:', error);
             document.getElementById('playlist-title').textContent = 'Error: ' + error.message;
         });
 
+    // Helper functions
     function attachPlayListeners() {
         document.querySelectorAll(".play-sample").forEach(button => {
             button.addEventListener("click", () => {
@@ -196,32 +198,31 @@
         });
     }
 
-    function attachBuyListeners(tracks) {
-        document.querySelectorAll(".buy-track-btn").forEach(button => {
-            button.addEventListener("click", (e) => {
+    function attachDownloadListeners(tracks) {
+        document.querySelectorAll(".track-download").forEach(link => {
+            link.addEventListener("click", (e) => {
                 e.preventDefault();
-                const trackId = button.getAttribute("data-track-id");
+                const trackId = link.getAttribute("data-track-id");
                 const track = tracks.find(t => t.id == trackId);
                 if (track && track.download) {
                     document.getElementById("track-download-modal").removeAttribute('inert');
                     document.getElementById("track-download-modal").style.display = "flex";
                     document.getElementById("track-download-title").textContent = track.title;
-                    stripe.redirectToCheckout({
-                        lineItems: [{ price: 'price_1YOURID', quantity: 1 }], // Replace with your Stripe Price ID
-                        mode: 'payment',
-                        successUrl: window.location.href + '?success=true',
-                        cancelUrl: window.location.href + '?cancel=true'
-                    }).then(result => {
-                        if (result.error) {
-                            document.getElementById('track-card-errors').textContent = result.error.message;
-                        }
-                    });
+                    if (window.card) window.card.unmount();
+                    const cardElement = document.getElementById('track-card-element');
+                    if (cardElement) {
+                        window.card.mount(cardElement);
+                        console.log('Card mounted for track modal');
+                        // Force focus and wait for input
+                        setTimeout(() => cardElement.querySelector('input').focus(), 100);
+                    }
                 }
             });
         });
     }
 
-    var stripe = Stripe('pk_live_51S9eZlE8VeplveDuSikbjq2q2t4VKIdLPcNZIqSTNl7dcA0rvsdnZyl5SXyJRvH9h1TkU8bAIMRWNd6li8TdnMZI00ZLuxuWvH');
+    // Stripe and Modal Logic
+    var stripe = Stripe('pk_live_51S9eZlE8VeplveDuSikbjq2q2t4VKIdLPcNZIqSTNl7dcA0rvsdnZyl5SXyJRvH9h1TkU8bAIMRWNd6li8TdnMZI00ZLuxuWvH'); // Saved Stripe key
     var elements = stripe.elements();
     var card = elements.create('card', {
         style: {
@@ -246,20 +247,17 @@
     form.addEventListener('submit', (event) => {
         event.preventDefault();
         var enteredCode = promoCodeInput.value.trim();
-        const cardElement = document.getElementById('card-element');
         if (enteredCode === promoCode) {
             downloadModal.removeAttribute('inert');
             downloadModal.style.display = 'flex';
         } else {
             card.unmount();
-            card.mount(cardElement);
-            cardElement.focus(); // Lock focus
-            document.activeElement.blur(); // Clear any stray focus
+            card.mount('#card-element');
             setTimeout(() => {
-                if (cardElement && !card._isMounted) {
-                    card.mount(cardElement);
+                if (document.getElementById('card-element') && !card._isMounted) {
+                    card.mount('#card-element');
                     console.log('Card remounted for main form');
-                    cardElement.querySelector('input').focus();
+                    document.getElementById('card-element').querySelector('input').focus();
                 }
                 stripe.createToken(card).then(result => {
                     if (result.error) {
@@ -270,8 +268,29 @@
                         downloadModal.style.display = 'flex';
                     }
                 }).catch(err => console.error('Stripe error:', err));
-            }, 700); // Longer delay
+            }, 500);
         }
+    });
+
+    document.getElementById('track-submit').addEventListener('click', () => {
+        card.unmount();
+        card.mount('#track-card-element');
+        setTimeout(() => {
+            if (document.getElementById('track-card-element') && !card._isMounted) {
+                card.mount('#track-card-element');
+                console.log('Card remounted for track modal');
+                const input = document.getElementById('track-card-element').querySelector('input');
+                if (input) input.focus(); // Force focus on input
+            }
+            stripe.createToken(card).then(result => {
+                if (result.error) {
+                    document.getElementById('track-card-errors').textContent = result.error.message;
+                } else {
+                    console.log('Track token created: ' + result.token.id);
+                    document.getElementById('track-download-link').style.display = 'block';
+                }
+            }).catch(err => console.error('Track Stripe error:', err));
+        }, 500);
     });
 
     closeButtons.forEach(closeBtn => {
