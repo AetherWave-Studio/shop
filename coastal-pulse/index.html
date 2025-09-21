@@ -156,8 +156,8 @@
         </div>
     </div>
 
-    <script>
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzdtU3oKL4ajOSRTkzZzO7JTq2TU8QYO6W7rlZvGk7SZuf3uEj6E1P7YLgxkfbj-iMY/exec'; // Replace with your deployed URL
+   <script>
+    const WEB_APP_URL = 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec'; // Replace with your deployed URL
 
     // Fetch and populate playlist data
     fetch(WEB_APP_URL)
@@ -211,33 +211,55 @@
                 const track = tracks.find(t => t.id == trackId);
                 if (track && track.download) {
                     document.getElementById("track-download-modal").style.display = "flex";
-                    document.getElementById("track-download-link").href = track.download;
                     document.getElementById("track-download-title").textContent = track.title;
-                    // Here you would typically initiate a Stripe checkout session
-                    // For now, simulate with a placeholder
-                    console.log(`Initiating Stripe for ${track.title} at ${track.download}`);
-                    // Replace with actual Stripe client-side checkout
+                    // Unmount existing card element to avoid conflicts
+                    if (window.trackCard) {
+                        window.trackCard.unmount();
+                    }
+                    // Re-mount card element for this modal
+                    window.trackCard = elements.create('card', {
+                        style: {
+                            base: {
+                                color: '#F4F4F4',
+                                backgroundColor: '#1E1E2F',
+                                fontFamily: 'Open Sans, sans-serif',
+                                fontSize: '16px',
+                                '::placeholder': { color: '#A6EFFF' }
+                            }
+                        }
+                    });
+                    window.trackCard.mount('#track-card-element');
                 }
             });
         });
     }
 
     // Stripe and Modal Logic
-    var stripe = Stripe('pk_live_51S9eZlE8VeplveDuSikbjq2q2t4VKIdLPcNZIqSTNl7dcA0rvsdnZyl5SXyJRvH9h1TkU8bAIMRWNd6li8TdnMZI00ZLuxuWvH'); // Replace with live
-var elements = stripe.elements();
-var card = elements.create('card', {
-    style: {
-        base: {
-            color: '#F4F4F4',
-            backgroundColor: '#1E1E2F',
-            fontFamily: 'Open Sans, sans-serif',
-            fontSize: '16px',
-            '::placeholder': { color: '#A6EFFF' }
+    var stripe = Stripe('pk_live_your_publishable_key_here'); // Replace with live key
+    var elements = stripe.elements();
+    var card = elements.create('card', {
+        style: {
+            base: {
+                color: '#F4F4F4',
+                backgroundColor: '#1E1E2F',
+                fontFamily: 'Open Sans, sans-serif',
+                fontSize: '16px',
+                '::placeholder': { color: '#A6EFFF' }
+            }
         }
-    }
-});
-card.mount('#card-element');
-card.mount('#track-card-element');
+    });
+    card.mount('#card-element');
+    window.trackCard = elements.create('card', {
+        style: {
+            base: {
+                color: '#F4F4F4',
+                backgroundColor: '#1E1E2F',
+                fontFamily: 'Open Sans, sans-serif',
+                fontSize: '16px',
+                '::placeholder': { color: '#A6EFFF' }
+            }
+        }
+    });
 
     var form = document.getElementById('payment-form');
     var promoCodeInput = document.getElementById('promo-code');
@@ -254,6 +276,21 @@ card.mount('#track-card-element');
         if (enteredCode === promoCode) {
             downloadModal.style.display = 'flex';
         } else {
+            if (window.card) {
+                window.card.unmount();
+            }
+            window.card = elements.create('card', {
+                style: {
+                    base: {
+                        color: '#F4F4F4',
+                        backgroundColor: '#1E1E2F',
+                        fontFamily: 'Open Sans, sans-serif',
+                        fontSize: '16px',
+                        '::placeholder': { color: '#A6EFFF' }
+                    }
+                }
+            });
+            window.card.mount('#card-element');
             stripe.createToken(card).then(result => {
                 if (result.error) {
                     document.getElementById('card-errors').textContent = result.error.message;
@@ -269,12 +306,14 @@ card.mount('#track-card-element');
         closeBtn.onclick = () => {
             if (closeBtn.parentElement.parentElement.id === 'downloadModal') {
                 downloadModal.style.display = 'none';
+                if (window.card) window.card.unmount();
             } else if (closeBtn.parentElement.parentElement.id === 'sampleModal') {
                 sampleModal.style.display = 'none';
                 document.getElementById('sampleAudio').pause();
                 document.getElementById('sampleAudio').currentTime = 0;
             } else if (closeBtn.parentElement.parentElement.id === 'track-download-modal') {
                 trackDownloadModal.style.display = 'none';
+                if (window.trackCard) window.trackCard.unmount();
             }
         };
     });
@@ -286,8 +325,10 @@ card.mount('#track-card-element');
             document.getElementById('sampleAudio').currentTime = 0;
         } else if (event.target == downloadModal) {
             downloadModal.style.display = 'none';
+            if (window.card) window.card.unmount();
         } else if (event.target == trackDownloadModal) {
             trackDownloadModal.style.display = 'none';
+            if (window.trackCard) window.trackCard.unmount();
         }
     };
 </script>
