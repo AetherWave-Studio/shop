@@ -138,179 +138,145 @@
         </div>
     </div>
 
-    <script>
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzdtU3oKL4ajOSRTkzZzO7JTq2TU8QYO6W7rlZvGk7SZuf3uEj6E1P7YLgxkfbj-iMY/exec'; // Replace with your deployed URL
+<script>
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzdtU3oKL4ajOSRTkzZzO7JTq2TU8QYO6W7rlZvGk7SZuf3uEj6E1P7YLgxkfbj-iMY/exec'; // Replace with your deployed URL
 
-        // Fetch and populate playlist data
-        fetch(WEB_APP_URL)
-            .then(response => {
-                if (!response.ok) throw new Error('Failed to fetch playlist data');
-                return response.json();
-            })
-            .then(data => {
-                if (data.error) throw new Error(data.error);
+    // Fetch and populate playlist data
+    fetch(WEB_APP_URL)
+        .then(response => {
+            if (!response.ok) throw new Error('Failed to fetch playlist data');
+            return response.json();
+        })
+        .then(data => {
+            if (data.error) throw new Error(data.error);
 
-                document.getElementById('playlist-title').textContent = data.title || 'Coastal Pulse';
-                document.getElementById('playlist-description').textContent = data.description || 'Immerse yourself in the rhythmic waves...';
-                document.getElementById('playlist-price').textContent = `For just ${data.price || '$9.99'}, unlock the full collection.`;
+            document.getElementById('playlist-title').textContent = data.title || 'Coastal Pulse';
+            document.getElementById('playlist-description').textContent = data.description || 'Immerse yourself in the rhythmic waves...';
+            document.getElementById('playlist-price').textContent = `For just ${data.price || '$9.99'}, unlock the full collection.`;
 
-                const trackList = document.getElementById('track-list');
-                trackList.innerHTML = '';
-                data.tracks.forEach(track => {
-                    const li = document.createElement('li');
-                    li.innerHTML = `<img src="${track.cover_art || ''}" alt="${track.title} cover" style="width: 50px; height: 50px; margin-right: 10px; vertical-align: middle;"> ${track.title} <button class="play-sample" data-src="${track.sample || ''}">Play Sample</button> <a href="#" class="download-btn track-download" data-track-id="${track.id}" style="margin-left: 10px;">Download Track ZIP ($1.99)</a>`;
-                    trackList.appendChild(li);
-                });
-
-                document.getElementById('download-link').href = data.zip_download || '';
-                attachPlayListeners();
-                attachDownloadListeners(data.tracks);
-            })
-            .catch(error => {
-                console.error('Error loading playlist:', error);
-                document.getElementById('playlist-title').textContent = 'Error Loading Playlist';
+            const trackList = document.getElementById('track-list');
+            trackList.innerHTML = '';
+            data.tracks.forEach(track => {
+                const li = document.createElement('li');
+                li.innerHTML = `<img src="${track.cover_art || ''}" alt="${track.title} cover" style="width: 50px; height: 50px; margin-right: 10px; vertical-align: middle;"> ${track.title} <button class="play-sample" data-src="${track.sample || ''}">Play Sample</button> <a href="#" class="download-btn track-download" data-track-id="${track.id}" style="margin-left: 10px;">Download Track ZIP ($1.99)</a>`;
+                trackList.appendChild(li);
             });
 
-        // Helper functions
-        function attachPlayListeners() {
-            document.querySelectorAll(".play-sample").forEach(button => {
-                button.addEventListener("click", () => {
-                    const src = button.getAttribute("data-src");
-                    const audio = document.getElementById("sampleAudio");
-                    audio.src = src;
-                    audio.load();
-                    document.getElementById("sampleModal").style.display = "flex";
-                    audio.play();
-                });
+            document.getElementById('download-link').href = data.zip_download || '';
+            attachPlayListeners();
+            attachDownloadListeners(data.tracks);
+        })
+        .catch(error => {
+            console.error('Error loading playlist:', error);
+            document.getElementById('playlist-title').textContent = 'Error Loading Playlist';
+        });
+
+    // Helper functions
+    function attachPlayListeners() {
+        document.querySelectorAll(".play-sample").forEach(button => {
+            button.addEventListener("click", () => {
+                const src = button.getAttribute("data-src");
+                const audio = document.getElementById("sampleAudio");
+                audio.src = src;
+                audio.load();
+                document.getElementById("sampleModal").style.display = "flex";
+                audio.play();
+            });
+        });
+    }
+
+    function attachDownloadListeners(tracks) {
+        document.querySelectorAll(".track-download").forEach(link => {
+            link.addEventListener("click", (e) => {
+                e.preventDefault();
+                const trackId = link.getAttribute("data-track-id");
+                const track = tracks.find(t => t.id == trackId);
+                if (track && track.download) {
+                    document.getElementById("track-download-modal").style.display = "flex";
+                    document.getElementById("track-download-title").textContent = track.title;
+                    // Unmount and remount single card element
+                    if (window.card) {
+                        window.card.unmount();
+                    }
+                    window.card.mount('#track-card-element');
+                }
+            });
+        });
+    }
+
+    // Stripe and Modal Logic
+    var stripe = Stripe('pk_live_51S9eZlE8VeplveDuSikbjq2q2t4VKIdLPcNZIqSTNl7dcA0rvsdnZyl5SXyJRvH9h1TkU8bAIMRWNd6li8TdnMZI00ZLuxuWvH'); // Replace with live key
+    var elements = stripe.elements();
+    var card = elements.create('card', {
+        style: {
+            base: {
+                color: '#F4F4F4',
+                backgroundColor: '#1E1E2F',
+                fontFamily: 'Open Sans, sans-serif',
+                fontSize: '16px',
+                '::placeholder': { color: '#A6EFFF' }
+            }
+        }
+    });
+    card.mount('#card-element'); // Initially mounted to main form
+
+    var form = document.getElementById('payment-form');
+    var promoCodeInput = document.getElementById('promo-code');
+    var promoCode = 'FREECOASTAL';
+    var downloadModal = document.getElementById('downloadModal');
+    var sampleModal = document.getElementById('sampleModal');
+    var trackDownloadModal = document.getElementById('track-download-modal');
+    var closeButtons = document.querySelectorAll('.close');
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        var enteredCode = promoCodeInput.value.trim();
+
+        if (enteredCode === promoCode) {
+            downloadModal.style.display = 'flex';
+        } else {
+            card.unmount(); // Unmount before remounting
+            card.mount('#card-element');
+            stripe.createToken(card).then(result => {
+                if (result.error) {
+                    document.getElementById('card-errors').textContent = result.error.message;
+                } else {
+                    console.log('Token created: ' + result.token.id);
+                    downloadModal.style.display = 'flex';
+                }
             });
         }
+    });
 
-        function attachDownloadListeners(tracks) {
-            document.querySelectorAll(".track-download").forEach(link => {
-                link.addEventListener("click", (e) => {
-                    e.preventDefault();
-                    const trackId = link.getAttribute("data-track-id");
-                    const track = tracks.find(t => t.id == trackId);
-                    if (track && track.download) {
-                        document.getElementById("track-download-modal").style.display = "flex";
-                        document.getElementById("track-download-title").textContent = track.title;
-                        if (window.trackCard) {
-                            window.trackCard.unmount();
-                        }
-                        window.trackCard = elements.create('card', {
-                            style: {
-                                base: {
-                                    color: '#F4F4F4',
-                                    backgroundColor: '#1E1E2F',
-                                    fontFamily: 'Open Sans, sans-serif',
-                                    fontSize: '16px',
-                                    '::placeholder': { color: '#A6EFFF' }
-                                }
-                            }
-                        });
-                        window.trackCard.mount('#track-card-element');
-                    }
-                });
-            });
-        }
-
-        // Stripe and Modal Logic
-        var stripe = Stripe('pk_live_51S9eZlE8VeplveDuSikbjq2q2t4VKIdLPcNZIqSTNl7dcA0rvsdnZyl5SXyJRvH9h1TkU8bAIMRWNd6li8TdnMZI00ZLuxuWvH'); // Replace with live key
-        var elements = stripe.elements();
-        var card = elements.create('card', {
-            style: {
-                base: {
-                    color: '#F4F4F4',
-                    backgroundColor: '#1E1E2F',
-                    fontFamily: 'Open Sans, sans-serif',
-                    fontSize: '16px',
-                    '::placeholder': { color: '#A6EFFF' }
-                }
-            }
-        });
-        card.mount('#card-element');
-        window.trackCard = elements.create('card', {
-            style: {
-                base: {
-                    color: '#F4F4F4',
-                    backgroundColor: '#1E1E2F',
-                    fontFamily: 'Open Sans, sans-serif',
-                    fontSize: '16px',
-                    '::placeholder': { color: '#A6EFFF' }
-                }
-            }
-        });
-
-        var form = document.getElementById('payment-form');
-        var promoCodeInput = document.getElementById('promo-code');
-        var promoCode = 'FREECOASTAL';
-        var downloadModal = document.getElementById('downloadModal');
-        var sampleModal = document.getElementById('sampleModal');
-        var trackDownloadModal = document.getElementById('track-download-modal');
-        var closeButtons = document.querySelectorAll('.close');
-
-        form.addEventListener('submit', (event) => {
-            event.preventDefault();
-            var enteredCode = promoCodeInput.value.trim();
-
-            if (enteredCode === promoCode) {
-                downloadModal.style.display = 'flex';
-            } else {
-                if (window.card) {
-                    window.card.unmount();
-                }
-                window.card = elements.create('card', {
-                    style: {
-                        base: {
-                            color: '#F4F4F4',
-                            backgroundColor: '#1E1E2F',
-                            fontFamily: 'Open Sans, sans-serif',
-                            fontSize: '16px',
-                            '::placeholder': { color: '#A6EFFF' }
-                        }
-                    }
-                });
-                window.card.mount('#card-element');
-                stripe.createToken(card).then(result => {
-                    if (result.error) {
-                        document.getElementById('card-errors').textContent = result.error.message;
-                    } else {
-                        console.log('Token created: ' + result.token.id);
-                        downloadModal.style.display = 'flex';
-                    }
-                });
-            }
-        });
-
-        closeButtons.forEach(closeBtn => {
-            closeBtn.onclick = () => {
-                if (closeBtn.parentElement.parentElement.id === 'downloadModal') {
-                    downloadModal.style.display = 'none';
-                    if (window.card) window.card.unmount();
-                } else if (closeBtn.parentElement.parentElement.id === 'sampleModal') {
-                    sampleModal.style.display = 'none';
-                    document.getElementById('sampleAudio').pause();
-                    document.getElementById('sampleAudio').currentTime = 0;
-                } else if (closeBtn.parentElement.parentElement.id === 'track-download-modal') {
-                    trackDownloadModal.style.display = 'none';
-                    if (window.trackCard) window.trackCard.unmount();
-                }
-            };
-        });
-
-        window.onclick = (event) => {
-            if (event.target == sampleModal) {
+    closeButtons.forEach(closeBtn => {
+        closeBtn.onclick = () => {
+            if (closeBtn.parentElement.parentElement.id === 'downloadModal') {
+                downloadModal.style.display = 'none';
+                card.unmount();
+            } else if (closeBtn.parentElement.parentElement.id === 'sampleModal') {
                 sampleModal.style.display = 'none';
                 document.getElementById('sampleAudio').pause();
                 document.getElementById('sampleAudio').currentTime = 0;
-            } else if (event.target == downloadModal) {
-                downloadModal.style.display = 'none';
-                if (window.card) window.card.unmount();
-            } else if (event.target == trackDownloadModal) {
+            } else if (closeBtn.parentElement.parentElement.id === 'track-download-modal') {
                 trackDownloadModal.style.display = 'none';
-                if (window.trackCard) window.trackCard.unmount();
+                card.unmount();
             }
         };
-    </script>
+    });
+
+    window.onclick = (event) => {
+        if (event.target == sampleModal) {
+            sampleModal.style.display = 'none';
+            document.getElementById('sampleAudio').pause();
+            document.getElementById('sampleAudio').currentTime = 0;
+        } else if (event.target == downloadModal) {
+            downloadModal.style.display = 'none';
+            card.unmount();
+        } else if (event.target == trackDownloadModal) {
+            trackDownloadModal.style.display = 'none';
+            card.unmount();
+        }
+    };
+</script>
 </body>
 </html>
