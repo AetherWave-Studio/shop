@@ -3,31 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coastal Pulse - Aetherwave Studio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <title>Aetherwave Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Orbitron&display=swap" rel="stylesheet">
     <style>
-	.modal {
-    display: none; /* Rely on this instead of aria-hidden */
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.7);
-    justify-content: center;
-    align-items: center;
-}
-.modal[style*="display: flex"] {
-    display: flex !important; /* Ensure active state */
-}
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal[style*="display: flex"] {
+            display: flex !important;
+        }
         body { margin: 0; padding: 0; font-family: 'Open Sans', sans-serif; background-color: #2C003E; color: #F4F4F4; line-height: 1.6; }
         .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
         header { text-align: center; padding: 40px 0; }
         .logo { font-family: 'Orbitron', sans-serif; font-size: 2.5em; color: #e15afd; margin-bottom: 10px; }
         .tagline { font-size: 1.2em; color: #A6EFFF; }
-        .hero { text-align: center; padding: 60px 0; }
+        .hero { text-align: center; padding: 5px 0; }
         .hero h1 { font-family: 'Orbitron', sans-serif; font-size: 3em; color: #00F5A0; margin-bottom: 20px; }
         .hero p { font-size: 1.2em; max-width: 800px; margin: 0 auto 40px; color: #F4F4F4; }
         .features { display: flex; justify-content: space-around; flex-wrap: wrap; margin-bottom: 60px; }
@@ -36,10 +36,12 @@
         .track-list { background-color: #1E1E2F; padding: 40px; border-radius: 10px; margin-bottom: 60px; }
         .track-list h2 { font-family: 'Orbitron', sans-serif; color: #A6EFFF; text-align: center; margin-bottom: 30px; }
         .track-list ul { list-style: none; padding: 0; max-width: 600px; margin: 0 auto; }
-        .track-list li { font-size: 1.1em; margin-bottom: 10px; color: #F4F4F4; display: flex; justify-content: space-between; align-items: center; }
+        .track-list li { font-size: 1.1em; margin-bottom: 10px; color: #F4F4F4; display: flex; align-items: center; gap: 15px; }
+        .track-list img { width: 50px; height: 50px; object-fit: cover; border-radius: 5px; }
+        .track-list .track-info { flex-grow: 1; }
         .play-sample { background-color: #00F5A0; color: #2C003E; font-family: 'Open Sans', sans-serif; font-size: 0.9em; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; }
         .play-sample:hover { background-color: #e15afd; }
-        .download-btn { background-color: #00F5A0; color: #2C003E; font-family: 'Orbitron', sans-serif; font-size: 1.2em; padding: 15px 30px; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; text-decoration: none; display: inline-block; margin-left: 10px; }
+        .download-btn { background-color: #00F5A0; color: #2C003E; font-family: 'Orbitron', sans-serif; font-size: 0.9em; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; text-decoration: none; }
         .download-btn:hover { background-color: #e15afd; }
         .cta { text-align: center; padding: 60px 0; background-color: #1E1E2F; }
         .cta h2 { font-family: 'Orbitron', sans-serif; color: #00F5A0; margin-bottom: 20px; }
@@ -57,25 +59,52 @@
         #track-card-element { border: 1px solid #A6EFFF; padding: 10px; border-radius: 5px; margin-bottom: 10px; }
         #track-submit { margin-top: 10px; }
     </style>
-    <script src="https://js.stripe.com/v3/"></script>
+	<style>
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    max-width: 800px;
+    margin: 20px auto;
+    border-radius: 10px;
+    background-color: #1E1E2F;
+}
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #e15afd;
+}
+</style>
 </head>
 <body>
     <header>
-        <div class="container">
-            <div class="logo">Aetherwave Studio</div>
-            <div class="tagline">AI Music. Human Soul. Infinite Sound.</div>
-        </div>
+        <h1 class="logo">Aetherwave Studio</h1>
+        <p class="tagline">AI Music. Human Soul. Infinite Sound.</p>
     </header>
 
-    <section class="hero">
-        <div class="container">
-            <h1 id="playlist-title">Coastal Pulse</h1>
-            <p id="playlist-description">Immerse yourself in the rhythmic waves of binaural beats designed to elevate your focus, relaxation, and creativity. This 12-track collection blends AI precision with human intuition, creating soundscapes that transport you to serene coastal realms. Perfect for meditation, work, or unwinding—experience the pulse of the ocean in every beat.</p>
-        </div>
-    </section>
+    <div class="container">
+		<div class="video-container">
+    <iframe 
+        width="560" 
+        height="315" 
+        src="https://firebasestorage.googleapis.com/v0/b/aetherwave-playlists.firebasestorage.app/o/Coastal%20Pulse%2FBinaural%20Beats%20Explainer%20COMPRESSED.mp4?alt=media&token=a6ad12a8-340e-497b-b734-4f8adaf6db8e" 
+        title="Coastal Pulse Preview" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+    </iframe>
+</div>
+		
+        <section class="hero">
+            <h1>Coastal Pulse</h1>
+            <p>Immerse yourself in the rhythmic waves of binaural beats designed to elevate your focus, relaxation, and creativity. This 12-track collection blends AI precision with human intuition, creating soundscapes that transport you to serene coastal realms. Perfect for meditation, work, or unwinding—experience the pulse of the ocean in every beat.</p>
+        </section>
 
-    <section class="features">
-        <div class="container">
+        <section class="features">
             <div class="feature">
                 <h3>Binaural Magic</h3>
                 <p>Engineered frequencies to sync your brainwaves for deeper states of mind.</p>
@@ -88,227 +117,119 @@
                 <h3>Infinite Replay</h3>
                 <p>High-quality audio files ready for your playlist—endless inspiration awaits.</p>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="track-list">
-        <div class="container">
+        <section class="track-list">
             <h2>Track List</h2>
-            <ul id="track-list"></ul>
-        </div>
-    </section>
+            <ul id="track-list-container"></ul>
+        </section>
 
-    <section class="cta">
-        <div class="container">
+        <section class="cta">
             <h2>Get Your Copy Now</h2>
-            <p id="playlist-price">For just $9.99, unlock the full collection and dive into infinite sound. Secure payment powered by Stripe. Or enter a promo code for free access.</p>
-            <div id="stripe-form">
-                <form id="payment-form">
-                    <input type="text" id="promo-code" class="code-input" placeholder="Enter promo code (optional)">
-                    <div id="card-element"></div>
-                    <button class="buy-button" id="submit">Purchase Now</button>
-                    <div id="card-errors" role="alert"></div>
-                </form>
-            </div>
-        </div>
-    </section>
+            <p>For just $9.99, unlock the full collection and dive into infinite sound. Secure payment powered by Stripe. Or enter a promo code for free access.</p>
+            <form id="stripe-form">
+                <h3>Apply Promo Codes at checkout.</h2>
+                <button type="submit" class="buy-button">Apply</button>
+                <a id="purchase-now-link" href="#" class="buy-button">Purchase Now</a>
+            </form>
+        </section>
+    </div>
 
     <footer>
-        <div class="container">
-            &copy; 2025 Aetherwave Studio. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
-            <br>Created by Andrew Froehlich, CEO Aetherwave Studio & Founder, The AI Music Report
-        </div>
+        <p>© 2025 Aetherwave Studio. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        <p>Created by Andrew Froehlich, CEO Aetherwave Studio & Founder, The AI Music Report</p>
     </footer>
 
-    <div id="sampleModal" class="modal">
+    <div id="sample-modal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h3 style="font-family: 'Orbitron', sans-serif; color: #e15afd;">30-Second Sample</h3>
-            <audio controls id="sampleAudio">
-                <source src="" type="audio/mpeg">
+            <h2>30-Second Sample</h2>
+            <audio controls id="sample-audio">
+                <source src="#" type="audio/mpeg">
                 Your browser does not support the audio element.
             </audio>
         </div>
     </div>
 
-    <div id="downloadModal" class="modal">
+    <div id="download-ready-modal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h3 style="font-family: 'Orbitron', sans-serif; color: #e15afd;">Download Ready!</h3>
-            <p>Your Coastal Pulse collection is ready. Click below to download the full ZIP file.</p>
-            <a id="download-link" class="download-btn">Download Now</a>
+            <h2>Download Ready!</h2>
+            <p>Your AetherWave Theme Collection is ready! Click below to download the full package.</p>
+            <a href="#" class="download-btn">Download Now</a>
         </div>
     </div>
 
     <div id="track-download-modal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h3 id="track-download-title" style="font-family: 'Orbitron', sans-serif; color: #e15afd;">Download Track</h3>
-            <p>Pay $1.99 to download this track's ZIP file.</p>
-            <div id="track-stripe-form">
-                <div id="track-card-element"></div>
-                <button id="track-submit" class="buy-button">Purchase</button>
-                <div id="track-card-errors" role="alert"></div>
-            </div>
-            <a id="track-download-link" class="download-btn" style="display: none;">Download Now</a>
+            <h2>Download Track</h2>
+            <p>$1.99 download this track + extras!</p>
+            <a id="track-download-link" href="#" class="download-btn">Download Now</a>
         </div>
     </div>
 
-<script>
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzdtU3oKL4ajOSRTkzZzO7JTq2TU8QYO6W7rlZvGk7SZuf3uEj6E1P7YLgxkfbj-iMY/exec';
-    fetch(WEB_APP_URL)
-        .then(response => {
-            if (!response.ok) throw new Error('Failed to fetch playlist data');
-            return response.json();
-        })
-        .then(data => {
-            if (data.error) throw new Error(data.error);
-            document.getElementById('playlist-title').textContent = data.title || 'Coastal Pulse';
-            document.getElementById('playlist-description').textContent = data.description || 'Immerse yourself in the rhythmic waves...';
-            document.getElementById('playlist-price').textContent = `For just ${data.price || '$9.99'}, unlock the full collection.`;
-            const trackList = document.getElementById('track-list');
-            trackList.innerHTML = '';
-            data.tracks.forEach(track => {
-                const li = document.createElement('li');
-                li.innerHTML = `<img src="${track.cover_art || ''}" alt="${track.title} cover" style="width: 50px; height: 50px; margin-right: 10px; vertical-align: middle;"> ${track.title} <button class="play-sample" data-src="${track.sample || ''}">Play Sample</button> <button class="buy-track-btn" data-track-id="${track.id}" data-price="199" style="margin-left: 10px;">Buy Track ZIP ($1.99)</button>`;
-                trackList.appendChild(li);
-            });
-            document.getElementById('download-link').href = data.zip_download || '';
-            attachPlayListeners();
-            attachBuyListeners(data.tracks);
-        })
-        .catch(error => {
-            console.error('Fetch error:', error);
-            document.getElementById('playlist-title').textContent = 'Error: ' + error.message;
-        });
+    <script>
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw_7rpfeNtN0zhvECa-l7XB6P8KGv6x-kVgnkqXSoCsaose95HiSOzNBrMzFGPlLdV7/exec';
+        fetch(WEB_APP_URL)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error('Error:', data.error);
+                    return;
+                }
+                window.playlistData = data;
 
-    function attachPlayListeners() {
-        document.querySelectorAll(".play-sample").forEach(button => {
-            button.addEventListener("click", () => {
-                const src = button.getAttribute("data-src");
-                const audio = document.getElementById("sampleAudio");
-                audio.src = src;
-                audio.load();
-                document.getElementById("sampleModal").removeAttribute('inert');
-                document.getElementById("sampleModal").style.display = "flex";
-                audio.play();
-            });
-        });
-    }
+                // Set Purchase Now link
+                document.getElementById('purchase-now-link').href = data.zip_download || '#';
 
-    function attachBuyListeners(tracks) {
-        document.querySelectorAll(".buy-track-btn").forEach(button => {
-            button.addEventListener("click", (e) => {
-                e.preventDefault();
-                const trackId = button.getAttribute("data-track-id");
-                const track = tracks.find(t => t.id == trackId);
-                if (track && track.download) {
-                    document.getElementById("track-download-modal").removeAttribute('inert');
-                    document.getElementById("track-download-modal").style.display = "flex";
-                    document.getElementById("track-download-title").textContent = track.title;
-                    stripe.redirectToCheckout({
-                        lineItems: [{ price: 'price_1YOURID', quantity: 1 }], // Replace with your Stripe Price ID
-                        mode: 'payment',
-                        successUrl: window.location.href + '?success=true',
-                        cancelUrl: window.location.href + '?cancel=true'
-                    }).then(result => {
-                        if (result.error) {
-                            document.getElementById('track-card-errors').textContent = result.error.message;
-                        }
+                // Render track list
+                const trackListContainer = document.getElementById('track-list-container');
+                trackListContainer.innerHTML = data.tracks.map(track => `
+                    <li class="track-item" data-track-id="${track.id}">
+                        <img src="${track.cover_art || 'https://via.placeholder.com/50'}" alt="${track.title} cover">
+                        <div class="track-info">
+                            <span>${track.title}</span>
+                            ${track.description ? `<p>${track.description}</p>` : ''}
+                        </div>
+                        <button class="play-sample" data-sample-url="${track.sample_url}">Play Sample</button>
+                        <a href="${track.download_url || '#'}" class="download-btn">Buy Now</a>
+                    </li>
+                `).join('');
+
+                // Add click listeners for track download modal
+                document.querySelectorAll('.track-item').forEach(item => {
+                    item.addEventListener('click', (e) => {
+                        if (e.target.classList.contains('play-sample') || e.target.classList.contains('download-btn')) return;
+                        const trackId = item.dataset.trackId;
+                        const track = window.playlistData.tracks.find(t => t.id == trackId);
+                        document.getElementById('track-download-link').href = track?.download_url || '#';
+                        document.getElementById('track-download-modal').style.display = 'flex';
                     });
-                }
-            });
-        });
-    }
+                });
 
-    var stripe = Stripe('pk_live_51S9eZlE8VeplveDuSikbjq2q2t4VKIdLPcNZIqSTNl7dcA0rvsdnZyl5SXyJRvH9h1TkU8bAIMRWNd6li8TdnMZI00ZLuxuWvH');
-    var elements = stripe.elements();
-    var card = elements.create('card', {
-        style: {
-            base: {
-                color: '#F4F4F4',
-                backgroundColor: '#1E1E2F',
-                fontFamily: 'Open Sans, sans-serif',
-                fontSize: '16px',
-                '::placeholder': { color: '#A6EFFF' }
-            }
-        }
-    });
+                // Add click listeners for sample playback
+                document.querySelectorAll('.play-sample').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const sampleUrl = btn.dataset.sampleUrl;
+                        const audio = document.getElementById('sample-audio');
+                        audio.src = sampleUrl;
+                        document.getElementById('sample-modal').style.display = 'flex';
+                        audio.play();
+                    });
+                });
 
-    var form = document.getElementById('payment-form');
-    var promoCodeInput = document.getElementById('promo-code');
-    var promoCode = 'FREECOASTAL';
-    var downloadModal = document.getElementById('downloadModal');
-    var sampleModal = document.getElementById('sampleModal');
-    var trackDownloadModal = document.getElementById('track-download-modal');
-    var closeButtons = document.querySelectorAll('.close');
-
-    form.addEventListener('submit', (event) => {
-        event.preventDefault();
-        var enteredCode = promoCodeInput.value.trim();
-        const cardElement = document.getElementById('card-element');
-        if (enteredCode === promoCode) {
-            downloadModal.removeAttribute('inert');
-            downloadModal.style.display = 'flex';
-        } else {
-            card.unmount();
-            card.mount(cardElement);
-            cardElement.focus(); // Lock focus
-            document.activeElement.blur(); // Clear any stray focus
-            setTimeout(() => {
-                if (cardElement && !card._isMounted) {
-                    card.mount(cardElement);
-                    console.log('Card remounted for main form');
-                    cardElement.querySelector('input').focus();
-                }
-                stripe.createToken(card).then(result => {
-                    if (result.error) {
-                        document.getElementById('card-errors').textContent = result.error.message;
-                    } else {
-                        console.log('Token created: ' + result.token.id);
-                        downloadModal.removeAttribute('inert');
-                        downloadModal.style.display = 'flex';
-                    }
-                }).catch(err => console.error('Stripe error:', err));
-            }, 700); // Longer delay
-        }
-    });
-
-    closeButtons.forEach(closeBtn => {
-        closeBtn.onclick = () => {
-            if (closeBtn.parentElement.parentElement.id === 'downloadModal') {
-                downloadModal.style.display = 'none';
-                downloadModal.setAttribute('inert', '');
-                card.unmount();
-            } else if (closeBtn.parentElement.parentElement.id === 'sampleModal') {
-                sampleModal.style.display = 'none';
-                sampleModal.setAttribute('inert', '');
-                document.getElementById('sampleAudio').pause();
-                document.getElementById('sampleAudio').currentTime = 0;
-            } else if (closeBtn.parentElement.parentElement.id === 'track-download-modal') {
-                trackDownloadModal.style.display = 'none';
-                trackDownloadModal.setAttribute('inert', '');
-                card.unmount();
-            }
-        };
-    });
-
-    window.onclick = (event) => {
-        if (event.target == sampleModal) {
-            sampleModal.style.display = 'none';
-            sampleModal.setAttribute('inert', '');
-            document.getElementById('sampleAudio').pause();
-            document.getElementById('sampleAudio').currentTime = 0;
-        } else if (event.target == downloadModal) {
-            downloadModal.style.display = 'none';
-            downloadModal.setAttribute('inert', '');
-            card.unmount();
-        } else if (event.target == trackDownloadModal) {
-            trackDownloadModal.style.display = 'none';
-            trackDownloadModal.setAttribute('inert', '');
-            card.unmount();
-        }
-    };
-</script>
+                // Close modals
+                document.querySelectorAll('.modal .close').forEach(closeBtn => {
+                    closeBtn.addEventListener('click', () => {
+                        closeBtn.closest('.modal').style.display = 'none';
+                        const audio = document.getElementById('sample-audio');
+                        if (audio) audio.pause();
+                    });
+                });
+            })
+            .catch(error => console.error('Fetch error:', error));
+    </script>
 </body>
 </html>
