@@ -33,7 +33,7 @@
         }
         header {
             text-align: center;
-            padding: 40px 0;
+            padding: 0px 0;
             background-color: #1E1E2F; /* Deep Slate */
         }
         .logo {
@@ -88,14 +88,75 @@
             color: #e15afd; /* AetherWave Pink */
             text-decoration: none;
         }
+	.black-bg { background-color: #050506; }
+	.aether-nav {
+      font-family:'Orbitron',sans-serif;
+      font-weight:600;
+      text-align:right;
+      padding:10px 20px;
+	  background-color: #050506;
+      //background: rgba(44, 0, 62, 0.95);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+    .aether-nav ul {
+      margin:0;
+      padding:0;
+      list-style:none;
+      display:flex;
+      gap:16px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .aether-nav a {
+      text-decoration:none;
+      color:#fff;
+      font-size:clamp(0.9rem,1.4vw,1rem);
+      position:relative;
+      transition:color .3s;
+    }
+    .aether-nav a::after {
+      content:'';
+      position:absolute;
+      left:0;
+      bottom:-4px;
+      width:100%;
+      height:2px;
+      background:#00f5a0;
+      transform:scaleX(0);
+      transition:transform .3s,background .3s;
+    }
+    .aether-nav a:hover { color:#ff2b70; }
+    .aether-nav a:hover::after { transform:scaleX(1); background:#ff2b70; }
+    .aether-nav a.active { color:#ff2b70; }
+    .aether-nav a.active::after { transform:scaleX(1); background:#ff2b70; }
+    @media(max-width:640px){
+      .aether-nav{padding:8px 12px;}
+      .aether-nav ul{gap:12px;justify-content:flex-end;}
+    }
     </style>
 </head>
 <body>
     <header>
-        <div class="container">
-            <div class="logo">Aetherwave Studio</div>
-            <div class="tagline">AI Music. Human Soul. Infinite Sound.</div>
-        </div>
+        <div class="black-bg">
+			<img src="https://firebasestorage.googleapis.com/v0/b/aetherwave-playlists.firebasestorage.app/o/global-assets%2Faetherwave-banner2.png?alt=media&token=df5b57be-ae79-4424-a752-017da3778852" alt="Coastal Pulse Banner" style="width: 100%; max-width: 800px; border-radius: 10px;">
+			<!--<p class="tagline">AI Music. Human Soul. Infinite Sound.</p>-->
+				<nav class="aether-nav">
+					<ul>
+					  <li><a class="active" href="#">PLAYLISTS</a></li>	
+					  <li><a href="https://player.aetherwavestudio.com/">Global Playlist</a></li>
+					  <li><a href="https://featured-artist.aetherwavestudio.com/">Featured Artist</a></li>
+					  <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfHYRDb7iRmNFIneGJNsEhQ1wpi5QQYbXKy9mwFUMP4htvOoQ/viewform?usp=header" target="_blank">Submit Music</a></li>
+					  <li><a href="https://theme-packs.aetherwavestudio.com/">Theme Collections</a></li>
+					  <li><a href="https://aetherwavestudio.com/">Custom Music</a></li>
+					  <!--<li><a href="https://privacy.aetherwavestudio.com/">Privacy</a></li>-->
+					</ul>
+				</nav>
+		</div>
     </header>
 
     <div class="container">
