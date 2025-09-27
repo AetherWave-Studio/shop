@@ -121,7 +121,7 @@
     }
     body { margin: 0; padding: 0; font-family: 'Open Sans', sans-serif; background-color: #2C003E; color: #F4F4F4; line-height: 1.6; }
     .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
-    header { text-align: center; padding: 40px 0; }
+    header { text-align: center; padding: 0px 0; }
     .logo { font-family: 'Orbitron', sans-serif; font-size: 2.5em; color: #e15afd; margin-bottom: 10px; }
     .tagline { font-size: 1.2em; color: #A6EFFF; }
     .hero { text-align: center; padding: 20px 0; background: url('YOUR_DROPBOX_IMAGE_URL') center/cover no-repeat; }
@@ -159,13 +159,15 @@
     #track-submit { margin-top: 10px; }
     .cta-banner { text-align: center; margin: 20px 0; animation: pulse 2s infinite; }
     @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+	.black-bg { background-color: #050506; }
 </style>
 </head>
 <body>
     <header>
-        <!--<h1 class="logo">Aetherwave Studio</h1>-->
-		<img src="https://firebasestorage.googleapis.com/v0/b/aetherwave-playlists.firebasestorage.app/o/global-assets%2Faetherwave-banner2.png?alt=media&token=df5b57be-ae79-4424-a752-017da3778852" alt="Coastal Pulse Banner" style="width: 100%; max-width: 800px; border-radius: 10px;">
-        <p class="tagline">AI Music. Human Soul. Infinite Sound.</p>
+        <div class="black-bg">
+			<img src="https://firebasestorage.googleapis.com/v0/b/aetherwave-playlists.firebasestorage.app/o/global-assets%2Faetherwave-banner2.png?alt=media&token=df5b57be-ae79-4424-a752-017da3778852" alt="Coastal Pulse Banner" style="width: 100%; max-width: 800px; border-radius: 10px;">
+			<!--<p class="tagline">AI Music. Human Soul. Infinite Sound.</p>-->
+		</div>
     </header>
 
     <div class="container">
