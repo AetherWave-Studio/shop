@@ -28,6 +28,7 @@
         .logo { font-family: 'Orbitron', sans-serif; font-size: 2.5em; color: #e15afd; margin-bottom: 10px; }
         .tagline { font-size: 1.2em; color: #A6EFFF; }
         .hero { text-align: center; padding: 5px 0; }
+		
         .hero h1 { font-family: 'Orbitron', sans-serif; font-size: 3em; color: #00F5A0; margin-bottom: 20px; }
         .hero p { font-size: 1.2em; max-width: 800px; margin: 0 auto 40px; color: #F4F4F4; }
         .features { display: flex; justify-content: space-around; flex-wrap: wrap; margin-bottom: 60px; }
@@ -58,6 +59,19 @@
         #track-stripe-form { max-width: 400px; margin: 20px auto; }
         #track-card-element { border: 1px solid #A6EFFF; padding: 10px; border-radius: 5px; margin-bottom: 10px; }
         #track-submit { margin-top: 10px; }
+		.hero-video {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		z-index: -1;
+}
+.hero {
+    position: relative;
+    overflow: hidden;
+}
     </style>
 	<style>
 .video-container {
@@ -78,6 +92,73 @@
     height: 100%;
     border: 1px solid #e15afd;
 }
+.track-item:hover {
+    background: rgba(225, 90, 253, 0.2); /* Subtle #e15afd glow */
+    transform: scale(1.02);
+    transition: all 0.3s ease;
+}
+.play-sample:hover, .download-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px #00F5A0;
+}
+</style>
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.7);
+        justify-content: center;
+        align-items: center;
+    }
+    .modal[style*="display: flex"] {
+        display: flex !important;
+    }
+    body { margin: 0; padding: 0; font-family: 'Open Sans', sans-serif; background-color: #2C003E; color: #F4F4F4; line-height: 1.6; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+    header { text-align: center; padding: 40px 0; }
+    .logo { font-family: 'Orbitron', sans-serif; font-size: 2.5em; color: #e15afd; margin-bottom: 10px; }
+    .tagline { font-size: 1.2em; color: #A6EFFF; }
+    .hero { text-align: center; padding: 20px 0; background: url('YOUR_DROPBOX_IMAGE_URL') center/cover no-repeat; }
+    .hero h1, .hero p { background: rgba(30, 30, 47, 0.7); padding: 10px; border-radius: 5px; }
+    .hero { position: relative; text-shadow: 1px 1px 2px rgba(0,0,0,0.7); }
+    .features { display: flex; justify-content: space-around; flex-wrap: wrap; margin-bottom: 60px; }
+    .feature { flex: 1 1 300px; margin: 20px; text-align: center; }
+    .feature h3 { font-family: 'Orbitron', sans-serif; color: #e15afd; font-size: 1.5em; }
+    .track-list { background-color: #1E1E2F; padding: 40px; border-radius: 10px; margin-bottom: 60px; }
+    .track-list h2 { font-family: 'Orbitron', sans-serif; color: #A6EFFF; text-align: center; margin-bottom: 30px; }
+    .track-list ul { list-style: none; padding: 0; max-width: 600px; margin: 0 auto; }
+    .track-list li { font-size: 1.1em; margin-bottom: 10px; color: #F4F4F4; display: flex; align-items: center; gap: 15px; }
+    .track-list img { width: 50px; height: 50px; object-fit: cover; border-radius: 5px; }
+    .track-list .track-info { flex-grow: 1; }
+    .track-item { border: 2px solid #e15afd; border-radius: 8px; padding: 10px; } /* Added outline */
+    .track-item:hover { background: rgba(225, 90, 253, 0.2); transform: scale(1.02); transition: all 0.3s ease; }
+    .play-sample { background-color: #00F5A0; color: #2C003E; font-family: 'Open Sans', sans-serif; font-size: 0.9em; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; }
+    .play-sample:hover { background-color: #e15afd; transform: scale(1.1); box-shadow: 0 0 10px #00F5A0; }
+    .download-btn { background-color: #00F5A0; color: #2C003E; font-family: 'Orbitron', sans-serif; font-size: 0.9em; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; text-decoration: none; }
+    .download-btn:hover { background-color: #e15afd; transform: scale(1.1); box-shadow: 0 0 10px #00F5A0; }
+    .cta { text-align: center; padding: 60px 0; background-color: #1E1E2F; }
+    .cta h2 { font-family: 'Orbitron', sans-serif; color: #00F5A0; margin-bottom: 20px; }
+    .cta p { font-size: 1.2em; margin-bottom: 40px; }
+    #stripe-form { max-width: 400px; margin: 0 auto; }
+    .buy-button { background-color: #e15afd; color: #2C003E; font-family: 'Orbitron', sans-serif; font-size: 1.2em; padding: 15px 30px; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; }
+    .buy-button:hover { background-color: #00F5A0; }
+    .code-input { width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid #A6EFFF; border-radius: 5px; background-color: #1E1E2F; color: #F4F4F4; font-size: 1em; }
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.7); justify-content: center; align-items: center; }
+    .modal-content { background-color: #1E1E2F; margin: auto; padding: 20px; border: 1px solid #e15afd; width: 80%; max-width: 500px; border-radius: 10px; text-align: center; }
+    .close { color: #A6EFFF; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+    .close:hover, .close:focus { color: #00F5A0; text-decoration: none; }
+    audio { width: 100%; margin-top: 20px; }
+    #track-stripe-form { max-width: 400px; margin: 20px auto; }
+    #track-card-element { border: 1px solid #A6EFFF; padding: 10px; border-radius: 5px; margin-bottom: 10px; }
+    #track-submit { margin-top: 10px; }
+    .cta-banner { text-align: center; margin: 20px 0; animation: pulse 2s infinite; }
+    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 </style>
 </head>
 <body>
@@ -87,6 +168,18 @@
     </header>
 
     <div class="container">
+		
+       <section class="hero">
+		<div class="hero-video">
+			<video autoplay loop muted playsinline>
+			<source src=".\Hero_Video.mp4" type="video/mp4">
+			</video>
+		</div>
+            <h1>Coastal Pulse</h1>
+            <p>Immerse yourself in the rhythmic waves of binaural beats designed to elevate your focus, relaxation, and creativity. This 12-track collection blends AI precision with human intuition, creating soundscapes perfect for creators, podcasters, and video producers who want immersive, royalty-free background music to enhance focus, relaxation, and storytelling.</p>
+    
+		
+		
 		<div class="video-container">
 			
 			<iframe 
@@ -100,10 +193,7 @@
 			</iframe>
         </div>
 		
-        <section class="hero">
-            <h1>Coastal Pulse</h1>
-            <p>Immerse yourself in the rhythmic waves of binaural beats designed to elevate your focus, relaxation, and creativity. This 12-track collection blends AI precision with human intuition, creating soundscapes that transport you to serene coastal realms. Perfect for creators, podcasters, and video producers who want immersive, royalty-free background music to enhance focus, relaxation, and storytelling.</p>
-        </section>
+	</section>
 
         <section class="features">
             <div class="feature">
