@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aetherwave Studio</title>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Orbitron&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://firebasestorage.googleapis.com/v0/b/aetherwave-playlists.firebasestorage.app/o/global-files%2Fnav.css?alt=media&token=139d1bd7-b9e1-48db-a2d2-fc3efb12addd">
+    <link rel="stylesheet" href="https://firebasestorage.googleapis.com/v0/b/aetherwave-playlists.firebasestorage.app/o/global-files%2Ffooter.css?alt=media&token=4f8bebd7-80e6-4bd6-8910-08b844e467f9">
     <style>
         .modal {
             display: none;
@@ -158,73 +160,30 @@
     #track-submit { margin-top: 10px; }
     .cta-banner { text-align: center; margin: 20px 0; animation: pulse 2s infinite; }
     @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-	.black-bg { background-color: #050506; }
-	.aether-nav {
-      font-family:'Orbitron',sans-serif;
-      font-weight:600;
-      text-align:right;
-      padding:10px 20px;
-      background: rgba(44, 0, 62, 0.95);
-      backdrop-filter: blur(10px);
-      position: sticky;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1000;
-    }
-    .aether-nav ul {
-      margin:0;
-      padding:0;
-      list-style:none;
-      display:flex;
-      gap:16px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-    .aether-nav a {
-      text-decoration:none;
-      color:#fff;
-      font-size:clamp(0.9rem,1.4vw,1rem);
-      position:relative;
-      transition:color .3s;
-    }
-    .aether-nav a::after {
-      content:'';
-      position:absolute;
-      left:0;
-      bottom:-4px;
-      width:100%;
-      height:2px;
-      background:#00f5a0;
-      transform:scaleX(0);
-      transition:transform .3s,background .3s;
-    }
-    .aether-nav a:hover { color:#ff2b70; }
-    .aether-nav a:hover::after { transform:scaleX(1); background:#ff2b70; }
-    .aether-nav a.active { color:#ff2b70; }
-    .aether-nav a.active::after { transform:scaleX(1); background:#ff2b70; }
-    @media(max-width:640px){
-      .aether-nav{padding:8px 12px;}
-      .aether-nav ul{gap:12px;justify-content:flex-end;}
-    }
-</style>
+</style>		
 </head>
 <body>
     <header>
         <div class="black-bg">
 			<img src="https://firebasestorage.googleapis.com/v0/b/aetherwave-playlists.firebasestorage.app/o/global-assets%2Faetherwave-banner2.png?alt=media&token=df5b57be-ae79-4424-a752-017da3778852" alt="Coastal Pulse Banner" style="width: 100%; max-width: 800px; border-radius: 10px;">
 			<!--<p class="tagline">AI Music. Human Soul. Infinite Sound.</p>-->
-				<nav class="aether-nav">
-					<ul>
-					  <li><a class="active" href="#">PLAYLISTS</a></li>	
-					  <li><a href="https://player.aetherwavestudio.com/">Global Playlist</a></li>
-					  <li><a href="https://featured-artist.aetherwavestudio.com/">Featured Artist</a></li>
-					  <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfHYRDb7iRmNFIneGJNsEhQ1wpi5QQYbXKy9mwFUMP4htvOoQ/viewform?usp=header" target="_blank">Submit Music</a></li>
-					  <li><a href="https://theme-packs.aetherwavestudio.com/">Theme Collections</a></li>
-					  <li><a href="https://aetherwavestudio.com/">Custom Music</a></li>
-					  <!--<li><a href="https://privacy.aetherwavestudio.com/">Privacy</a></li>-->
-					</ul>
-				</nav>
+			<nav class="aether-nav">
+				<ul>
+					<li class="dropdown">
+						<a class="active" href="#">PLAYLISTS</a>
+						<div class="dropdown-content">
+							<a href="https://playlists.aetherwavestudio.com/coastal-pulse/" target="_blank">Coastal Pulse</a>
+							<a href="https://playlists.aetherwavestudio.com/other-playlist/" target="_blank">Other Playlist</a>
+							<a href="https://playlists.aetherwavestudio.com/" target="_blank">All Playlists</a>
+						</div>
+					</li>
+					<li><a href="https://player.aetherwavestudio.com/">Global Playlist</a></li>
+					<li><a href="https://featured-artist.aetherwavestudio.com/">Featured Artist</a></li>
+					<li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfHYRDb7iRmNFIneGJNsEhQ1wpi5QQYbXKy9mwFUMP4htvOoQ/viewform?usp=header" target="_blank">Submit Music</a></li>
+					<li><a href="https://theme-packs.aetherwavestudio.com/">Theme Collections</a></li>
+					<li><a href="https://aetherwavestudio.com/">Custom Music</a></li>
+				</ul>
+			</nav>
 		</div>
     </header>
 
