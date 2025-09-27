@@ -29,7 +29,7 @@
         .tagline { font-size: 1.2em; color: #A6EFFF; }
         .hero { text-align: center; padding: 5px 0; }
 		
-        .hero h1 { font-family: 'Orbitron', sans-serif; font-size: 3em; color: #00F5A0; margin-bottom: 20px; }
+        .hero h1 { font-family: 'Orbitron', sans-serif; font-size: 3em; color: #A6EFFF; margin-bottom: 20px; }
         .hero p { font-size: 1.2em; max-width: 800px; margin: 0 auto 40px; color: #F4F4F4; }
         .features { display: flex; justify-content: space-around; flex-wrap: wrap; margin-bottom: 60px; }
         .feature { flex: 1 1 300px; margin: 20px; text-align: center; }
@@ -160,6 +160,54 @@
     .cta-banner { text-align: center; margin: 20px 0; animation: pulse 2s infinite; }
     @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 	.black-bg { background-color: #050506; }
+	.aether-nav {
+      font-family:'Orbitron',sans-serif;
+      font-weight:600;
+      text-align:right;
+      padding:10px 20px;
+      background: rgba(44, 0, 62, 0.95);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+    .aether-nav ul {
+      margin:0;
+      padding:0;
+      list-style:none;
+      display:flex;
+      gap:16px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .aether-nav a {
+      text-decoration:none;
+      color:#fff;
+      font-size:clamp(0.9rem,1.4vw,1rem);
+      position:relative;
+      transition:color .3s;
+    }
+    .aether-nav a::after {
+      content:'';
+      position:absolute;
+      left:0;
+      bottom:-4px;
+      width:100%;
+      height:2px;
+      background:#00f5a0;
+      transform:scaleX(0);
+      transition:transform .3s,background .3s;
+    }
+    .aether-nav a:hover { color:#ff2b70; }
+    .aether-nav a:hover::after { transform:scaleX(1); background:#ff2b70; }
+    .aether-nav a.active { color:#ff2b70; }
+    .aether-nav a.active::after { transform:scaleX(1); background:#ff2b70; }
+    @media(max-width:640px){
+      .aether-nav{padding:8px 12px;}
+      .aether-nav ul{gap:12px;justify-content:flex-end;}
+    }
 </style>
 </head>
 <body>
@@ -167,6 +215,17 @@
         <div class="black-bg">
 			<img src="https://firebasestorage.googleapis.com/v0/b/aetherwave-playlists.firebasestorage.app/o/global-assets%2Faetherwave-banner2.png?alt=media&token=df5b57be-ae79-4424-a752-017da3778852" alt="Coastal Pulse Banner" style="width: 100%; max-width: 800px; border-radius: 10px;">
 			<!--<p class="tagline">AI Music. Human Soul. Infinite Sound.</p>-->
+				<nav class="aether-nav">
+					<ul>
+					  <li><a class="active" href="#">PLAYLISTS</a></li>	
+					  <li><a href="https://player.aetherwavestudio.com/">Global Playlist</a></li>
+					  <li><a href="https://featured-artist.aetherwavestudio.com/">>Featured Artist</a></li>
+					  <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfHYRDb7iRmNFIneGJNsEhQ1wpi5QQYbXKy9mwFUMP4htvOoQ/viewform?usp=header" target="_blank">Submit Music</a></li>
+					  <li><a href="https://theme-packs.aetherwavestudio.com/">Theme Collections</a></li>
+					  <li><a href="https://aetherwavestudio.com/">Custom Music</a></li>
+					  <!--<li><a href="https://privacy.aetherwavestudio.com/">Privacy</a></li>-->
+					</ul>
+				</nav>
 		</div>
     </header>
 
@@ -199,7 +258,7 @@
 	</section>
 
         <section class="features">
-            <div class="feature">.
+            <div class="feature">
                 <h3>Binaural Magic</h3>
                 <p>Engineered frequencies to sync your brainwaves for deeper states of mind.</p>
             </div>
