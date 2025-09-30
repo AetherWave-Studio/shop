@@ -228,7 +228,21 @@
             position: relative;
             overflow: hidden;
         }
+		.service-card {
+		background-image: url('assets/images/coastal-pulse-bg.png');
+		background-size: 100%, calc(100% - 20px); /* Scales image to cover the card */
+		background-position: center; /* Centers the image */
+		background-repeat: no-repeat; /* Prevents tiling */
+		padding: 20px; /* Adjust for content spacing */
+		color: #ffffff; /* White text for contrast, adjust based on image */
+		text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Optional: improves text readability */
+		border-radius: 8px; /* Optional: softens edges for a modern look */
+		min-height: 200px;/* Ensure card has enough space for image */
+		background-color: #f0f0f0; /* Optional: Light gray background for the frame, adjust to match campaign */
+		}
+
         
+
         .service-card::before {
             content: '';
             position: absolute;
@@ -423,33 +437,17 @@
 </header>
 
   <main class="wrap">
-  
-  <!--<div class="container">
-        <h2 style="font-family: 'Orbitron', sans-serif; color: #e15afd; text-align: center;">Explore Our Playlists</h2>
-        <div class="playlists">
-            <div class="playlist-item">
-                <h3>Coastal Pulse</h3>
-                <p>Binaural beats for focus and relaxation.</p>
-                <a href="/coastal-pulse/">Listen Now</a>
-            </div> -->
-            <!-- Add more playlist items as needed 
-            <div class="playlist-item">
-                <h3>Future Playlist 1</h3>
-                <p>Coming soon - immersive soundscapes.</p>
-                <a href="/future-playlist-1/">Coming Soon</a>
-            </div>
-        </div>
-    </div>-->
-     <!-- Services Section -->
     <section class="services">
         <div class="container">
             <h2 class="section-title">Our Music Services</h2>
             <div class="services-grid">
                 <div class="service-card">
-                    <h3>AI-Only Basic</h3>
-                    <p>Fast, affordable tracks generated with cutting-edge AI tools</p>
-                    <div class="price">$99</div>
-                    <p>Perfect for content creators needing quick background music</p>
+                    <h3></h3>
+					<br>
+                    <p>Highly mastered, premier audio tracks generated with cutting-edge AI tools</p>
+                    <div class="price">$9.95</div>
+					<br>
+                    <p>Perfect for creators seeking a hypnotic, focused, immersive environment</p>
                 </div>
                 <div class="service-card">
                     <h3>Hybrid Pro</h3>
