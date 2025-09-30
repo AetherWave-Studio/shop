@@ -1,101 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aetherwave Studio Playlists</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-<link href="https://firebasestorage.googleapis.com/v0/b/aetherwave-playlists.firebasestorage.app/o/global-files%2Fnav.css?alt=media&token=139d1bd7-b9e1-48db-a2d2-fc3efb12addd" rel="stylesheet">
- <link href="https://firebasestorage.googleapis.com/v0/b/aetherwave-playlists.firebasestorage.app/o/global-files%2Ffooter.css?alt=media&token=4f8bebd7-80e6-4bd6-8910-08b844e467f9" rel="stylesheet">
-    <style>
-        #track-card-element {
-    background-color: #1E1E2F;
-    border: 1px solid #A6EFFF;
-    color: #F4F4F4;
-    padding: 10px;
-    border-radius: 5px;
-		}
-	.StripeElement {
-		background-color: #1E1E2F;
-		color: #F4F4F4;
-		padding: 10px;
-		}
-		body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Open Sans', sans-serif;
-            background-color: #2C003E; /* Midnight Violet */
-            color: #F4F4F4; /* White Smoke */
-            line-height: 1.6;
-        }
-        .container {
-            max-width: 1240px;
-            margin: 0 auto;
-            padding: 40px 20px; /* Consistent padding */
-        }
-        header {
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0d0b15" />
+  <meta name="description" content="A Collaboration Space." />  
+  <meta property="og:title" content="AetherWave Studio" />
+  <meta property="og:description" content="All Intelligence Is Welcome Here" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/aetherwave-playlists.firebasestorage.app/o/global-assets%2FAetherWave%20Banner%20pinwhite1920.png?alt=media&token=256e0120-cd5b-46ce-9feb-95730bf34119" />
+  <meta property="og:url" content="https://aetherwavestudio.com" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600..900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Aetherwave Studio Splash Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://firebasestorage.googleapis.com/v0/b/aetherwave-playlists.firebasestorage.app/o/global-files%2Fnav.css?alt=media&token=139d1bd7-b9e1-48db-a2d2-fc3efb12addd" rel="stylesheet">
+  <link href="https://firebasestorage.googleapis.com/v0/b/aetherwave-playlists.firebasestorage.app/o/global-files%2Ffooter.css?alt=media&token=4f8bebd7-80e6-4bd6-8910-08b844e467f9" rel="stylesheet">
+  <style>
+  header {
             text-align: center;
             padding: 0px 0;
-            background-color: 
-			max-width: 1920px; #1E1E2F; /* Deep Slate */
-        }
-        .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5em;
-            color: #e15afd; /* AetherWave Pink */
-            margin-bottom: 10px;
-        }
-        .tagline {
-            font-size: 1.2em;
-            color: #A6EFFF; /* Sky Glint */
-        }
-        .playlists {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            padding: 40px 0;
-        }
-        .playlist-item {
             background-color: #1E1E2F; /* Deep Slate */
-            padding: 20px;
-            border-radius: 10px;
-            width: 300px;
-            text-align: center;
-            transition: transform 0.3s;
         }
-        .playlist-item:hover {
-            transform: scale(1.05);
-        }
-        .playlist-item h3 {
-            font-family: 'Orbitron', sans-serif;
-            color: #00F5A0; /* Electric Neon */
-            margin-bottom: 10px;
-        }
-        .playlist-item a {
-            color: #e15afd; /* AetherWave Pink */
-            text-decoration: none;
-            font-size: 1.1em;
-        }
-        .playlist-item a:hover {
-            color: #A6EFFF; /* Sky Glint */
-        }
-       /*footer {
-            text-align: center;
-            padding: 20px 0;
-            background-color: #1E1E2F; /* Deep Slate */
-            font-size: 0.9em;
-            color: #A6EFFF; /* Sky Glint */
-        }
-        footer a {
-            color: #e15afd; /* AetherWave Pink */
-            text-decoration: none;
-        }*/
+      --ink:#e9e8ff;
+    :root{
+      --muted:#b7b3d9;
+      --aetherwave-pink:#ff2ea6;
+    }
+    html, body { height: 100%; margin:0; }
+    body{
+      color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      overflow-x:hidden;
+      overflow-y:hidden;
+      background-attachment: fixed;
+    }
 	
-    </style>
+	
+	
+	
+	
+	
+	</style>
+	
+
 </head>
-<body>
-<header>
+	<body>
+
+	<header>
         <div>
 			<a href="https://aetherwavestudio.com/"><img src="https://firebasestorage.googleapis.com/v0/b/aetherwave-playlists.firebasestorage.app/o/global-assets%2FAetherWave%20Banner%20pinwhite1920x192.png?alt=media&token=0f9154af-2d16-4a4f-8822-4c641355c377" alt="Coastal Pulse Banner" style="width: 100%; max-width: 1920px; border-radius: 10px;"></a>
 			<!--<p class="tagline">AI Music. Human Soul. Infinite Sound.</p>-->
@@ -117,12 +71,38 @@
 				</ul>
 			</nav>
 		</div>
-</header>		
-    <footer>
+</header>
+
+  <main class="wrap">
+  
+  <div class="container">
+        <h2 style="font-family: 'Orbitron', sans-serif; color: #e15afd; text-align: center;">Explore Our Playlists</h2>
+        <div class="playlists">
+            <div class="playlist-item">
+                <h3>Coastal Pulse</h3>
+                <p>Binaural beats for focus and relaxation.</p>
+                <a href="/coastal-pulse/">Listen Now</a>
+            </div>
+            <!-- Add more playlist items as needed -->
+            <div class="playlist-item">
+                <h3>Future Playlist 1</h3>
+                <p>Coming soon - immersive soundscapes.</p>
+                <a href="/future-playlist-1/">Coming Soon</a>
+            </div>
+        </div>
+    </div>
+  
+  
+  
+
+  </main>
+  <footer>
         <div class="container">
-            &copy; 2025 Aetherwave Studio. All rights reserved. | <a href="https://privacy.aetherwavestudio.com/">Privacy Policy</a> | <a href="https://privacy.aetherwavestudio.com/">Terms of Service</a>
+            &copy; 2025 Aetherwave Studio. All rights reserved. | <a href="https://aetherwavestudio.com/provacy-policy">Privacy Policy</a> | <a href="https://aetherwavestudio.com/provacy-policy">Terms of Service</a>
             <br>Created by Andrew Froehlich, CEO & Founder Aetherwave Studio | <a href="https://www.facebook.com/groups/2142548066240224">AI MUSIC ALLIANCE</a>
         </div>
     </footer>
 </body>
 </html>
+
+
