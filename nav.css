@@ -1,15 +1,10 @@
 	.black-bg { background-color: #050506; }
-	body {
-      background-image: url('path/to/your/image.jpg');
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: center center;
-    }
+	
     .aether-nav {
         font-family: 'Orbitron', sans-serif;
         font-weight: 600;
         text-align: right;
-        padding: 10px 20px;
+        padding: 10px 10px;
         background: rgba(44, 0, 62, 0.95);
         backdrop-filter: blur(10px);
         position: sticky;

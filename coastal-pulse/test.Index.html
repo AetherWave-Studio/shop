@@ -7,7 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Orbitron&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://firebasestorage.googleapis.com/v0/b/aetherwave-playlists.firebasestorage.app/o/global-files%2Fnav.css?alt=media&token=139d1bd7-b9e1-48db-a2d2-fc3efb12addd">
     <link rel="stylesheet" href="https://firebasestorage.googleapis.com/v0/b/aetherwave-playlists.firebasestorage.app/o/global-files%2Ffooter.css?alt=media&token=4f8bebd7-80e6-4bd6-8910-08b844e467f9">
-    <style>
+    <title>AetherWave — Coastal Pulse Collection</title>
+	<style>
         .modal {
             display: none;
             position: fixed;
@@ -24,8 +25,13 @@
         .modal[style*="display: flex"] {
             display: flex !important;
         }
+		.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
         body { margin: 0; padding: 0; font-family: 'Open Sans', sans-serif; background-color: #2C003E; color: #F4F4F4; line-height: 1.6; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
         .logo { font-family: 'Orbitron', sans-serif; font-size: 2.5em; color: #e15afd; margin-bottom: 10px; }
         .tagline { font-size: 1.2em; color: #A6EFFF; }
         .hero { text-align: center; padding: 5px 0; }
@@ -68,23 +74,22 @@
 		height: 100%;
 		object-fit: cover;
 		z-index: -1;
-}
-.hero {
-    position: relative;
-    overflow: hidden;
-}
-    </style>
-	<style>
-.video-container {
-    position: relative;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
-    height: 0;
-    overflow: hidden;
-    max-width: 800px;
-    margin: 20px auto;
-    border-radius: 10px;
-    background-color: #1E1E2F;
-}
+		}
+		.hero {
+		position: relative;
+		overflow: hidden;
+		}
+
+		.video-container {
+		position: relative;
+		padding-bottom: 56.25%; /* 16:9 aspect ratio */
+		height: 0;
+		overflow: hidden;
+		max-width: 800px;
+		margin: 20px auto;
+		border-radius: 10px;
+		background-color: #1E1E2F;
+		}
 .video-container iframe {
     position: absolute;
     top: 0;
@@ -102,8 +107,7 @@
     transform: scale(1.1);
     box-shadow: 0 0 10px #00F5A0;
 }
-</style>
-<style>
+
     .modal {
         display: none;
         position: fixed;
@@ -125,9 +129,9 @@
       background-image: url('path/to/your/image.jpg');
       background-repeat: no-repeat;
       background-size: cover;
-      background-position: center center;
+      background-position: center center;800w
     }
-    .container { max-width: 1920px; margin: 0 auto; padding: 40px 20px; }
+    .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
     header { text-align: center; padding: 0px 0; }
     .logo { font-family: 'Orbitron', sans-serif; font-size: 2.5em; color: #e15afd; margin-bottom: 10px; }banner
     .tagline { font-size: 1.2em; color: #A6EFFF; }
@@ -170,16 +174,22 @@
 </head>
 <body>
     <header>
-        <div>
-			<div>
-			<img src="https://firebasestorage.googleapis.com/v0/b/aetherwave-playlists.firebasestorage.app/o/global-assets%2FAetherWave%20Banner%20pinwhite1920.png?alt=media&token=256e0120-cd5b-46ce-9feb-95730bf34119" alt="Coastal Pulse Banner" style="width: 100%; max-width: 1920px; border-radius: 10px;">
+		<div>
+			<div class="banner" text-align="center">
+				<img
+			src="https://firebasestorage.googleapis.com/v0/b/aetherwave-playlists.firebasestorage.app/o/global-assets%2FAetherWave%20Studio%20Banner-800px.png?alt=media&token=dc3be052-c6a3-4ff8-9d70-28ed2c6b7118"
+			srcset="https://firebasestorage.googleapis.com/v0/b/aetherwave-playlists.firebasestorage.app/o/global-assets%2FAetherWave%20Studio%20Banner-800px.png?alt=media&token=dc3be052-c6a3-4ff8-9d70-28ed2c6b7118 800w, https://firebasestorage.googleapis.com/v0/b/aetherwave-playlists.firebasestorage.app/o/global-assets%2FAetherWave%20Banner%20pinwhite1920.png?alt=media&token=256e0120-cd5b-46ce-9feb-95730bf34119 1920w"
+			sizes="(max-width: 800px) 800px, 1920px"
+			alt="Coastal Pulse Banner"
+			/>
+			</div>
 			<!--<p class="tagline">AI Music. Human Soul. Infinite Sound.</p>-->
 			<nav class="aether-nav">
 				<ul>
 					<li class="dropdown">
-						<a href="https://playlists.aetherwavestudio.com/" target="_blank">PLAYLISTS</a>
+						<a href="https://playlists.aetherwavestudio.com" target="_blank">PLAYLISTS</a>
 						<div class="dropdown-content">
-							<a href="https://playlists.aetherwavestudio.com/coastal-pulse/" target="_blank">Coastal Pulse</a>
+							<a class="active" href="#">Coastal Pulse</a>
 							<a href="https://playlists.aetherwavestudio.com/other-playlist/" target="_blank">Other Playlist</a>
 							<a href="https://playlists.aetherwavestudio.com/" target="_blank">All Playlists</a>
 						</div>
@@ -191,7 +201,6 @@
 					<li><a href="https://aetherwavestudio.com/">Custom Music</a></li>
 				</ul>
 			</nav>
-			</div>
 		</div>
     </header>
 
@@ -200,7 +209,7 @@
        <section class="hero">
 		<div class="hero-video">
 			<video autoplay loop muted playsinline>
-			<source src=".\Hero_Video.mp4" type="video/mp4">
+			<source src="https://firebasestorage.googleapis.com/v0/b/aetherwave-playlists.firebasestorage.app/o/global-assets%2FCompressedCoastal%20Pulse%20Asmr%20Video_preview.mp4?alt=media&token=ed73bfa8-d2c2-4387-b56e-77200945bb6d" type="video/mp4">
 			</video>
 		</div>
             <h1>Coastal Pulse</h1>
@@ -208,7 +217,7 @@
     
 		
 		
-		<div class="video-container">
+		<!--<div class="video-container">
 			
 			<iframe 
 				width="560" 
@@ -219,7 +228,7 @@
 				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
 				allowfullscreen>
 			</iframe>
-        </div>
+        </div>-->
 		
 	</section>
 
