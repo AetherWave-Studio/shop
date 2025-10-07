@@ -235,8 +235,7 @@
             overflow: hidden;
         }
 		.service-card {
-		background-image: url('assets/images/coastal-pulse-bg.png');
-		background-size: 100%, calc(100% - 20px); /* Scales image to cover the card */
+		background-size: cover; /* scales to fit without distortion */
 		background-position: center; /* Centers the image */
 		background-repeat: no-repeat; /* Prevents tiling */
 		padding: 20px; /* Adjust for content spacing */
@@ -246,10 +245,18 @@
 		min-height: 200px;/* Ensure card has enough space for image */
 		background-color: #f0f0f0; /* Optional: Light gray background for the frame, adjust to match campaign */
 		}
-
+		.service-card.music {
+		  background-image: url('https://firebasestorage.googleapis.com/v0/b/aetherwave-playlists.firebasestorage.app/o/Shop-Site%2FAudi%20tracks%20for%20sale2.png?alt=media&token=b5ac6070-b9c1-4d21-a368-db7e829e7003');
+		}
+		.service-card.collection {
+		  background-image: url('https://firebasestorage.googleapis.com/v0/b/aetherwave-playlists.firebasestorage.app/o/Shop-Site%2FAudi%20tracks%20for%20sale2.png?alt=media&token=b5ac6070-b9c1-4d21-a368-db7e829e7003');
+		}
+		.service-card.toolkit {
+		  background-image: url('https://firebasestorage.googleapis.com/v0/b/aetherwave-playlists.firebasestorage.app/o/Shop-Site%2Ftoolkitsfor%20sale.jpg?alt=media&token=4bbf219d-c87c-4599-8cf2-bcbcf1c779e2');
+		}
         
 
-        .service-card::before {
+        /*.service-card::before {
             content: '';
             position: absolute;
             top: 0;
@@ -257,7 +264,23 @@
             right: 0;
             height: 4px;
             background: linear-gradient(90deg, var(--aether-pink), var(--sky-glint));
-        }
+        }*/
+		
+		.service-card::before {
+		  content: "";
+		  position: absolute;
+		  top: 0;
+		  left: 0;
+		  width: 100%;
+		  height: 100%;
+		  background-color: rgba(0, 0, 0, 0.1); /* Adjust opacity (0.4 is a good start—tweak for your images) */
+		  z-index: 1; /* Places overlay above the bg image but below content */
+		  border-radius: 8px; /* Matches the card's rounding */
+		}
+		.service-card > * {
+		  position: relative;
+		  z-index: 2;
+		}
         
         .service-card:hover {
             transform: translateY(-10px);
@@ -418,7 +441,7 @@
                 display: none;
             }
         
-    </style
+    </style>
 </head>	
 <body>
 	<header>
@@ -448,25 +471,39 @@
         <div class="container">
             <h2 class="section-title">Our Music Services</h2>
             <div class="services-grid">
-                <a href= "https://shop.aetherwavestudio.com/coastal-pulse/"><div class="service-card">
-                    <h3></h3>
+                <a href="https://shop.aetherwavestudio.com/coastal-pulse/"><div class="service-card music">
+                    <h3>Audio Tracks</h3>
 					<br>
-                    <p>Highly mastered, premier audio tracks generated with cutting-edge AI tools</p>
-                    <div class="price">$9.95</div>
+                    <p></p>
 					<br>
-                    <p>Perfect for creators seeking a hypnotic, focused, immersive environment</p>
+					<br>
+					<br>
+					<br>
+					<br>
+                    <div class="price">$4.95+</div>
+                    <p>For creators seeking the perfect track for the moment</p>
                 </div></a>
-                <div class="service-card">
-                    <h3>Hybrid Pro</h3>
-                    <p>AI-generated tracks refined with professional mixing/mastering</p>
-                    <div class="price">$299</div>
-                    <p>Ideal for brands and filmmakers needing polished sound</p>
+                <div class="service-card collection">
+                    <h3>Sound Design Collections</h3>
+                    <p></p>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+                    <div class="price">$29.95+</div>
+                    <p>Ideal for brands and filmmakers seeking a consistent and polished sound design</p>
                 </div>
-                <div class="service-card">
-                    <h3>Custom Song + Video</h3>
-                    <p>Complete audiovisual package with custom music and video</p>
-                    <div class="price">$499-$999</div>
-                    <p>Ultimate solution for artists and businesses</p>
+                <div class="service-card toolkit">
+                    <h3>Immersive Media Toolkits</h3>
+                    <p></p>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+                    <div class="price">$59.95+</div>
+                    <p>Complete audiovisual packages including sound design and extensive video and graphics library</p>
                 </div>
             </div>
         </div>
